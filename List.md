@@ -1,7 +1,9 @@
 # Links
 
 https://docs.python.org/3/reference/datamodel.html
+
 https://docs.python.org/3/library/unittest.mock.html
+
 (Non-exhaustive, deepcopy missing) https://github.com/python/cpython/blob/d63a7c3694d5c4484fcaa01c33590b1d4bc2559e/Include/internal/pycore_global_strings.h#L72
 
 Numeric Types:
