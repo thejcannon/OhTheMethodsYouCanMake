@@ -70,7 +70,7 @@ What would _you_ do if in that tower was you?
 
 So I said "umm sure, I do love me some learning"
 and the names on the plaque on that moment started burning
-The snake hissed "Most Exccelent" and slithered upstairs
+The snake hissed "Most Excellent" and slithered upstairs
 and I followed him, the expert in magic affairs
 
 ---
@@ -120,25 +120,162 @@ A good time to release acquired resources,
 like locks or descriptors, or all-the-kings-horses.
 
 ---
+(Emulating Attributes)
 
 Now, while we're on the subject of object customization,
-lets go over magic methods of attribute relation.
+lets go over magic methods for attribute emulation.
 The snake then slithered up the tower to be on level three,
 and I followed after him, you see.
 
-Starting with `__getattr__`, you might've used it
+Let's see now `__getattr__`, Monty then hissed
 It synthesizes attributes that don't exist.
-It's called when the default attribute access failed,
-The attribute name simply just wasn't detailed.
-Your class gets a chance to pretend it exists
-However, on your object, the attribute doesn't persist.
+It's called when default attribute access fails,
+The attribute simply wasn't in the details.
+Your class gets a chance to pretend it existed
+However, on your object, the attribute isn't persisted.
 
-It has an alter-ego, named `__getattribute__`,
-its called unconditionally for attributes, "the brute".
+It has an alter-ego, named `__getattribute__`, you see
+which is called for all access, _unconditionally_
 It gets called for names both existing and not,
 but beware, infinite recursion is easily got.
 
+Now on the other side, `__setattr__` is how,
+attribute setting, your classes allow.
+Again, by default the attribute isn't persisted,
+you get to choose whether it becomes listed.
+This is also called for all attributes without any condition,
+whether is existed or not, without your permission.
 
+The last of the attr methods, people sometimes leave off,
+define `__delattr__`, and people might scoff.
+As you probably can guess its good for emulation
+of the removal of a name from your object's formation.
+And just like `__setattr__`'s unfortunate asymmetry,
+it gets called unconditionally.
+
+Then, Monty said, well there's `__dir__`.
+I mean, you can define it, if you prefer.
+It gets called, if its there, by the builtin `dir`,
+to return valid attribute names, back to the caller.
+
+And so now you know, the magic incantations
+that you can use in certain combinations
+to pretend your object has more than it does
+for good reasons, or maybe, just because.
+
+However, in our attribute story, there is more.
+Monty said before slithering to level 4
+
+---
+(Descriptors)
+
+I have 4 methods, I'll teach to you now,
+these methods are powerful, you'll see how,
+an attribute gets to customize _itself_
+instead of sitting static on an object's shelf.
+
+"Descriptors" is the name given to this technique
+of attributes themselves, using doublespeak.
+
+First these things work as attributes of the class
+(you'll see Django and SQLAlchemy use this en masse)
+The descriptor is the attribute, and it gets a say
+on how _it_ gets gotted, setted, and deleted, per se
+
+`__get__` is the first of these spells you'll want to perfect
+conjuring values for attributes based on the caller's object
+(or sometimes the class, as callers sometimes will do,
+using class attribute lookup, so support that too).
+
+You've maybe have wondered, and even had a theory,
+how SQL ORM's quickly fire off a query,
+when you run something like `my_user.amount_in_debt`
+the "Column" descriptor is leveraging `__get__`
+to run a SQL query, using `my_user`'s ID,
+and return to you the value (and maybe cache it, you see)
+
+Just like `__getattr__`, `__get__` has two brothers,
+`__set__` and `__delete__` are the others.
+They act just like `__get__` in proxying a call,
+and can do anything they want, both big and small.
+
+For metaphorical purposes, let's finish our "Column" story,
+and see how these methods are very applicatory,
+`__set__` gets called for attribute assignment,
+A SQL `UPDATE` is likely used for new value enshrinement
+And `__delete__` when an attribute is told to go bye-bye
+a SQL `DELETE` is likely to go by.
+
+There's one more method, in case you've been counting,
+how a descriptor knows its name in its internal accounting
+Like how the SQL query knows the right column to use,
+`__set_name__` is a part of this too.
+
+At the end of your class definition, you see,
+for all of the class attributes that be,
+if they define a `__set_name__`,
+the attribute's name, Python will disclaim.
+
+And thus the attribute shell game, now comes to a close
+the illusions of attributes, we have now exposed
+Although more illusions we'll make come alive,
+And then Monty slithered up to level 5.
+
+---
+(Containers)
+
+On level 5 I listened, to Monty the explainer,
+and he told me how to emulate a data container.
+
+Our trio of methods we kept using for attributes,
+are also found in a data container's roots.
+`__get`-, `set`-, and `del`- have the suffix of `item__`
+[[[ talk about semantics? Like IndexError/KeyError ]]]
+(this topic was is something that seemed to excite him)
+
+They are given the key (and in one case, the value)
+implementing container semantics are then up to you.
+As and far as semantics go, there are a few more dunders
+you'll want to define, lest you commit several blunders
+
+A quick one that you will define,
+is `__len__` which helps Python divine
+the length of your container, so when people cal `len`,
+Python can return the number back to them.
+
+The second one is `__iter__`, which should return an iterator
+over the objects that all live inside your object container,
+unless its a mapping then what the iterator sees,
+is simply all of the mappings keys.
+There's also this trivia, a bit of Python fun,
+if your container isn't iterable, set `__iter__` to `None`!
+
+Now, third on our list is named `__contains__`,
+to support things like `if "thomas" in all_of_the_trains`.
+Although technically, you don't have to define it, Python won't be bitter
+Instead it'll test membership first using `__iter__`.
+Going over every possible object that your object can contain,
+and asking if any of those objects are equal or the same.
+But if you also don't define a `__iter__` method,
+`__getitem__` is called and repeatedly tested,
+using incrementing indexes from 0 until it then gets
+an `IndexError` exception or an equal/same object.
+So it's best to define it, so you have control,
+just how the object membership test will unroll.
+
+And if for optional methods you happen to thirst,
+another one available is `__reversed__`.
+It returns an iterator for doing backwards iteration,
+but only define it, if you beat the default computation,
+that Python uses combining `__getitem__` and `__len__`
+indexing backwards to 0
+
+_fin_
+
+Or at least we're done with container magic tricks
+Follow me upwards to be on level 6
+
+---
 
 
 
