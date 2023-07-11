@@ -25,6 +25,7 @@ By Dunder Seuss
 ---
 
 <!--
+(~ 1 minute)
 
 Thank you those here and watching online
 For allowing me to take up a slice of your time
@@ -49,6 +50,7 @@ And anything that makes code easier to read
 So should we get started? I think so! Indeed!
 
 ---
+(~ 1 minute)
 
 So...
 In my journey through Holland, between hither and yon
@@ -74,6 +76,7 @@ The snake hissed "Most Excellent" and slithered upstairs
 and I followed him, the expert in magic affairs
 
 ---
+(~ 1.5 minutes)
 
 He said "let us start with `__init__`"
 I smirked and I boasted, "yeah I've heard of it"
@@ -105,14 +108,14 @@ then the runtime it calls the type's `__init__`.
 Otherwise, if the object isn't related to your class
 nothing more is done, and to the caller it is passed.
 Therefore you can return anything from `__new__`,
-but what should be returned is up to you
+but what should be returned is completely up to you
 
 As an example of this power found in the standard library
 is `pathlib.Path`, whose `__new__` is "the cherry".
 The value given back to you when you construct it
 depends on your platform. Neat, you must admit
 
---
+---
 
 The opposite of `__new__` is not as exciting when employed,
 `__del__` is called right before an object is destroyed.
@@ -120,6 +123,7 @@ A good time to release acquired resources,
 like locks or descriptors, or all-the-kings-horses.
 
 ---
+(~ 2.5 minutes)
 (Emulating Attributes)
 
 Now, while we're on the subject of object customization,
@@ -167,6 +171,7 @@ However, in our attribute story, there is more.
 Monty said before slithering to level 4
 
 ---
+(~3 minutes)
 (Descriptors)
 
 I have 4 methods, I'll teach to you now,
@@ -222,6 +227,7 @@ Although more illusions we'll make come alive,
 And then Monty slithered up to level 5.
 
 ---
+(~ 2.5 minutes)
 (Containers)
 
 On level 5 I listened, to Monty the explainer,
@@ -276,12 +282,171 @@ Or at least we're done with container magic tricks
 Follow me upwards to be on level 6
 
 ---
+(~2 minutes)
+(Numeric operations)
 
+Now, this floor was HUGE, and split into thirds
+I could tell that the amount of magic here was absurd
+There's no group of dunders whose total was greater
+Than those for defining numeric operators
 
+Let's start with just one that you can define,
+`__add__` lets you support the plus sign
+when your object is on the left with whatevers on the right
+you return the added value, except when you might
+reject the operation, because you don't know what to do,
+and instead return the `NotImplemented` singleton value
+such is the case if you dont recognize the type
+of whatever the thing is on the right.
+
+Then the list of these operators you could configure,
+got bigger, and BIGGER, AND BIGGER, AND BIGGER,
+`__sub__` for subtraction, `__mul__` for times,
+`__truediv`- of `floordiv` depending on the kind,
+of division you want, true or integer, respectively
+using one slash or two, for division, collectively.
+And speaking of operations that come in pairs,
+modulo arithmetic is a double-dunder-affair,
+with `__mod__` for modulo support and then,
+`__divmod__` to support the `divmod` builtin.
+The last of our pairs of magic method gifts,
+is `__l`- and `__rshift`
+Then next up is `__pow__` for "to-the-power-of" support
+whose operator is two askerisks, side-by-side, for short
+and then, although the list was already so long
+three more dunder methods then came along
+`__and` - `xor`- and `or__`, oh come now, don't gripe,
+they're how you support ampersand, caret and pipe.
+And then, when your object supports the at-symbol,
+the method you define is called `__matmul__`
+
+AND THEN, that was it, there isn't more later
+FOURTEEN methods for numeric operators,
+
+~(3.5 minutes)
+
+but I said that this floor was split into thirds,
+and I didn't accidentally mix up my words,
+all of the magics that I just had listed
+in only one third of the floor existed
+the other two-thirds I had yet to learn from,
+and I bet maybe you're asking yourself "how come?"
+How come they return something called `NotImplemented`,
+if the end-result is a `TypeError` instead?
+
+And so our list of methods then expands,
+to support the same things with swapped operands,
+but only if the result is `NotImplemented`
+AND if two different types are presented,
+Python tries again but this time with an "R",
+at the front of the name, (it's not _that_ bizarre)
+and calls this other method on the thing on the right,
+let's see an example to bring how this works to light
+
+Let's say someone subtracts from a `tuple` your `Foo`,
+well `tuple` doesn't know what the heck to do,
+so it's `__sub__`, then returns `NotImplemented`,
+then the runtime continues on as documented,
+noticing that `tuple` and `Foo` are different classes
+and calls `Foo`'s `__rsub__`, and it passes
+the tuple object on which we've acted
+so `Foo` can say how it should be subtracted.
+
+Now remember, you'll have to be dextrous and deft,
+and try not to mix up a right "op" with a left,
+when in an "r-method" you're the one on the right
+getting this correct will make you seem bright
+
+And so, then said Monty, and he didn't look troubled,
+"that's how our long list of methods has DOUBLED"
+and yet, with one more triquadrant I started figuring,
+that the list had not stopped here at its biggering,
+there must be some more, so oh baby oh,
+how the list of these magic methods did grow.
+
+Within the last third of the floor's confinements
+held methods for augmented arithmetic assignments
+a whopping THIRTEEN MORE methods I learned,
+(the scars on my psyche, I assure you I earned,
+and by the end of this you'll've earned them too,
+once you know what the "i"-prefixed methods can do).
+
+They're meant to support doing the math "in-place",
+mutating the object given in the left space,
+for instance, `+=` uses `__iadd__`,
+(completing the addition support triad).
+However these methods you can actually omit,
+they're there to help avoid copies a bit,
+if one of these methods your type is lacking,
+then `x = x + y` will be the fallbacking
+
+If you kept watch, you might think I left one for later,
+but no, `divmod` has no in-place operator.
+
+And now, since you've mastered our third and last station
+of how to implement binary arithmetic operations.
+Now, don't worry, the list of methods has leavened,
+up, up, way up. Way up on level seven.
+
+---
+So on level 7, way up there, way way way way up there,
+I learned from Monty the magic methods, which are used to compare.
+
+The names of these methods really aren't at all surprising,
+the brevity of each name is what's really quite appetizing,
+using only 2 letters to represent each operator
+for operations equality, lesser, and greater.
+
+And exactly like the methods that I just reported
+they return NotImplemented if the comparison isn't supported,
+however this time there's no crazy switch-a-roo,
+in this case a `TypeError` is raised unto you
+And in the case the comparison is ok
+a True or False as a return is the way.
+
+So now, all the magic has awoken from its slumber,
+that will allow us to emulate operators around a number
+
+...Oh wait! Ohhhhh wait. Oh oh oh wait.
+Actually, there's also what I learned on level 8
+
+---
+~(1.5 minutes)
+
+At this point, I felt like I needed a gurney,
+to get me upstairs and finish my journey.
+Yet, despite all my swears, curses, and gripes,
+I _hadn't_ learned fully how to emulate numeric types
+Which after just learning FOURTY-SEVEN methods, is a bit scary,
+but then I forgot the operations _unary_.
+
+`__neg`- `pos`, `abs`, and `invert` I did learn
+for `-x`, `+x`, `abs(x)`, and `~x`, in turn
+
+Then came support for `int(x)`, `float(x)`, and `complex(x)`,
+just wrap the name in two underscores. Now, `__index__`
+is used when Python needs an integer for slicing or `bin()`,
+so you should define it, returning an `int`, and then
+only 4 more methods we'll need to encumber,
+to emulate our type being a number,
+`__round`-, `trunc`-, `ceil`-, and last `__floor__`,
+to truncate your object. Ok. No More.
 
 ...
 
-So when you use them, do so with great care and tact
-And remember that Programming's a balancing axt
+In fact, I'm done. That's it. I can't teach you much more.
+Because otherwise, I'm afraid there might be an uproar.
+And the wonderful organizers will show me the door.
+
+And, it turns out that I've just very quickly covered
+95 methods, only leaving 35 yet discovered.
+
+To know most of them, including the ones this talk doesn't entail,
+read docs.python.org/3/reference/datamodel.html
+or just ask Google for the URL
+
+So, since your mountain is waiting, and as you go on your way,
+remember the things I rememembered to you today,
+and write all your code, the good, Pythonic way.
 
 -->
