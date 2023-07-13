@@ -22,11 +22,7 @@ code {
 
 By Dunder Seuss
 
----
-
 <!--
-(~ 1 minute)
-
 Thank you those here and watching online
 For allowing me to take up a slice of your time
 To share with you a story that's anything but tragic
@@ -49,8 +45,11 @@ Who loves Python and Open-Source, by the way
 And anything that makes code easier to read
 So should we get started? I think so! Indeed!
 
+-->
+
 ---
-(~ 1 minute)
+
+<!---
 
 So...
 In my journey through Holland, between hither and yon
@@ -75,7 +74,14 @@ and the names on the plaque on that moment started burning
 The snake hissed "Most Excellent" and slithered upstairs
 and I followed him, the expert in magic affairs
 
+
+-->
+
 ---
+
+<!--
+
+
 (~ 1.5 minutes)
 
 He said "let us start with `__init__`"
@@ -236,7 +242,6 @@ and he told me how to emulate a data container.
 Our trio of methods we kept using for attributes,
 are also found in a data container's roots.
 `__get`-, `set`-, and `del`- have the suffix of `item__`
-[[[ talk about semantics? Like IndexError/KeyError ]]]
 (this topic was is something that seemed to excite him)
 
 They are given the key (and in one case, the value)
