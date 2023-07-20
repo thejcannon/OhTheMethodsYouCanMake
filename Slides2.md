@@ -27,27 +27,30 @@ By Dunder Seuss
 ...
 
 <!--
+(1 minute)
+
 Josh Cannon, aka "Dunder Seuss" has written no books so far, has been on a single podcast, and done
-exactly one talk before he decided to write this one.
+exactly one talk before he decided to write this book.
 
 Josh is a Build Engineer by day,
 a maintainer of the Pantsbuild Open Source Build System also by day.
 And sometimes participates in other open source projects, Python community discussions,
 and conference speaking... also by day.
 
-He's a lover of getting to know enough Python to make expressive, readable, intuitive code, and wrote
-this book to teach others of the power and magic that you can bring to your objects to make them
+He's a lover of getting to know enough Python to make expressive, readable, and intuitive code.
+He wrote this book to teach others of the power and magic that you can bring to your objects to make them
 expressive, readable, and intuitive.
 
 -->
 
 ---
 
-For Dottie and Teddy
+For Dottie and Teddy, with Love
 
 ---
 
 <!--
+
 Congratulations!
 Today is your day.
 You will soon learn you some magic,
@@ -180,12 +183,12 @@ then how they're used for illusions as well
 The second in our trio-of-trios, I'll teach to you now,
 these methods are so powerful. You'll see how,
 an attribute gets to customize _itself_
-instead of sitting _static_ on an object's shelf.
+instead of sitting _static_ on some other object's shelf.
 
 "Descriptors" is the name given to this technique
 of attributes themselves, using doublespeak.
 
-First these things work as attributes of the class
+First these things work as attributes of a class
 (you'll see Django and SQLAlchemy use this en masse)
 The "descriptor" is the attribute, and it gets a say
 on how _it_ gets gotted, setted, and deleted, per se
@@ -209,8 +212,10 @@ and can do anything they want, both big and small.
 
 For metaphorical purposes, let's finish our "Column" story,
 and see how these methods are very applicatory,
+
 `__set__` gets called for attribute assignment,
 A SQL `UPDATE` is likely used for new value enshrinement
+
 And `__delete__` when an attribute is told to go bye-bye
 a SQL `DELETE` you'll likely see fly by.
 
@@ -226,7 +231,7 @@ the attribute's name, Python will disclaim.
 And thus the _attribute_ shell game, now comes to a close
 the illusions of _attributes_, we have now exposed
 the last trio-of-trios, you'll learn from your trainer,
-is emulating items inside of a container
+is emulating _items_ inside of a container
 
 ---
 
@@ -235,7 +240,25 @@ to help quack like containers with things inside 'em
 
 They are given the key (and in one case, the value)
 implementing container semantics are then up to you.
-As and far as semantics go, there are a few more dunders
+
+`__getitem__` has different behaviors on the radar
+depending on the type of container your are
+Your sequence types (which quack like a tuple or a list)
+will accept keys as integers and slice objects
+Negative int support is something you can choose
+to allow or not, is simply up to you.
+If a value provided is outside of your bounds
+an `IndexError` your code should resound
+otherwise, if your container has a Mapping background,
+you'll raise `KeyError` if the key isn't found
+and in every case, if you you reject the key's type
+`raise TypeError` you'll then want to gripe
+
+You'll likely learn too,
+those rules still hold true,
+for the other methods two
+
+And, as far as semantics go, there are a few more dunders
 you'll want to define, lest you commit several blunders
 
 So although our trio of trios may have come to a close
@@ -272,6 +295,12 @@ It returns an iterator for doing backwards iteration,
 but you'll only define it, if you beat the default computation,
 that Python uses combining `__getitem__` and `__len__`
 indexing backwards to 0, and then...
+
+There's one more optional method if you subclass `dict`
+`__missing__` can be defined so that `__getitem__` can predict
+what value to use, if the key in your mapping isnt yet there
+It's how `collections.` `defaultdict` or `Counter`, with care
+support operations on items conjured out of thin air
 
 You'll find that you're done,
 you've mastered container emulation
@@ -364,7 +393,7 @@ THREE dunders, at most, for each of these things
 what _joy_ to us, supporting operators brings
 
 "So what sets _these_ apart?" You'll groan and you'll grunt.
-These last set of twelve has an "i" in the front.
+These last set of thirteen has an "i" in the front.
 They're meant to support doing the math "in-place",
 mutating the object given in the left space,
 for instance, `+=` uses `__iadd__`,
@@ -375,7 +404,7 @@ if one of these methods your type is lacking,
 then `x = x + y` will be the fallbacking
 
 If you kept watch, you might think I left one for later,
-but no, `divmod` has no in-place operator.
+but no, `__divmod__` has no in-place operator.
 
 ---
 
@@ -390,17 +419,18 @@ using only 2 letters to represent each operator
 for operations equality, lesser, and greater.
 
 And exactly like the methods that I just reported
-they return NotImplemented if the comparison isn't supported,
+they return `NotImplemented` if the comparison isn't supported,
 however this time there's no crazy switch-a-roo,
 in this case a `TypeError` is raised unto you
 And in the case the comparison is ok
 a True or False as a return is the way.
+
 Or anything truthy or falsey is ok,
 it's turned into a boolean the Pythonic way.
 
 Oh wait, forgive me, that's actually a new dunder
 magics on magics, isn't Python a wonder.
-Want to make your object seem `Falsey` or `True`?
+If you want to make your object seem `Falsey` or `True`?
 You'll have to define `__bool__` too.
 
 ---
@@ -413,15 +443,103 @@ to support the operators _unary_.
 `__neg`- `pos`, `abs`, and `invert` you'll learn
 for `-`, `+`, `abs(`, and `~` `x`, in turn
 
+That's it, you'll think, our list is complete.
+And you're right, I think, now isn't that neat
+55-ish methods to support the operators
+no list of magics in one section is greater
+
+Actually, not true, as you'll find out
+emulating a number gets to tout
+the longest list of required magic capitulators
+because in addition to most of those operators
+there's even more you'll want to support, you'll see
+numbers, I guess, just have lots of flexibility
+
 ---
 
-<<<<Do I have time for more?!?!?!?!>>>>
+From mathematics, the list adds on four,
+__round, trunc, ceil and floor.
+What these methods each do, you'll notice is visible,
+truncating the value into an `Integral`
+
+Then, from a number you'll have several excursions,
+if your object supports any of several conversions.
+
+`__complex, int, float, bytes, and str
+are magics which Python will look and refer
+to make the type conversion occur
 
 ---
+
+And speaking of strings, they've got special magic too
+`__repr__` and `format` will be waiting for you
+`__repr__` returning the “official” string representation of your object
+an executable string of your object is what callers expect
+And for `__format__` you'll choose exactly how to trek
+through formatting your object, based on the spec
+
+---
+
+The other magics all come in small lists,
+and in this tome, some of them won't exist,
+like the 11 methods for copying and/or pickling
+yet, here are some more, for you, coming in at a trickling
+
+---
+
+If you want your object to quack like a function
+`__call__` is the callable magic junction
+
+Or maybe you'll quack, perhaps like an iterator,
+`__next__` is the method for that imitator
+returning the next value, or the special terminator
+
+which goes by the name of `StopIteration`,
+you raise it when there's no more values in your formation
+
+---
+
+And if you want something that supports use with `with`,
+`__enter-` and `exit`, says the wordsmith
+The former is issued right before the inner scope
+`return self` is usually the trope
+the latter is called when the inner scope is done
+whether it finished or ran into an exception
+This method has power, in multiple ways,
+it can release acquired resources always,
+but it also gets a chance to suppress an exception
+`return True` to complete the interception
+
+---
+
+And then there are some, which feels kinda wacky,
+defining them sometimes feels a bit tacky
+`__init_subclass__` if defining it you have dared
+every time a subclass of yours is declared
+it receives that subclass, as quick as molasses,
+and was added to wean off some use of metaclasses
+
+And speaking of metaclasses there's `__prepare__`
+on second thought, you'll not want to go there...
+
+---
+
+The last set of magics on this magicallest of treks
+are for hooks into instance and subclass checks
+That's right, the objects you write actually gets a say,
+on the answer of `isinstance` and `issubclass`: yay or nay
+However, these are looked up on the type of your class.
+(Ugh metaclasses, How about we pass?)
+
+---
+
+And actually that's it, no more magic I'll disclose
+your journey, you've journeyed now comes to a close
 
 To know most of them, including the ones this talk doesn't entail,
 read docs.python.org/3/reference/datamodel.html
-or just ask Google for the URL
+(or just ask Google for the URL)
+most of the magics, that page does entail
 
 Now, since your mountain is waiting, and as you go on your way,
 remember the things I rememembered to you today,
