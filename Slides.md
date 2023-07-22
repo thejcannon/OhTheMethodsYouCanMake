@@ -1,30 +1,79 @@
 ---
 marp: true
-footer: "#NorthBayPython 2023 - Oh the (Methods) You Can (Make): By Dunder Seuss  - ![w:40 h:20](./images/discord.png) thejcannon#4100"
+footer: "#NorthBayPython 2023 - Oh the (Methods) You Can (Make): By Dunder Seuss  - ![w:40 h:20](./images/discord.png) thejcannon"
 theme: gaia
+transition: swipe
 class:
   - lead
-  - invert
+backgroundColor: white
 ---
 
 <style>
-code {
+@font-face {
+  font-family: 'Grinched';
+  src: url("./fonts/GrinchedRegular.otf");
+}
+
+@font-face {
+  font-family: 'Doctor Soos Light';
+  src: url("./fonts/Doctor Soos Light.ttf");
+}
+
+h1, h2 {
+  font-family: 'Grinched';
+}
+
+code, marp-pre {
   font-family: courier;
-  color: #fff176;
-  font-size: 100%;
+  color: black;
+  font-size: 200%;
   background: none;
 }
+
+marp-pre {
+  display: flex;
+  justify-content: center;
+  transform: scale(3);
+}
+
+footer {
+  font-family: 'Doctor Soos Light';
+  transform: translate(0, 15%);
+}
+
+#oh-the-methods-you-can-make {
+  transform: translate(0, -220%);
+}
+
+#by-dunder-seuss {
+  transform: translate(20%, -240%);
+}
+
+#for-dottie-and-teddy-with-love {
+    font-family: 'Doctor Soos Light';
+}
+
+[alt="arrow1"] {
+  transform: rotate(270deg) translate(0%, 300%);
+}
+
+[alt="arrow2"] {
+  transform: rotate(270deg) translate(60%, -300%);
+}
+
 </style>
 
-<!-- _backgroundImage: linear-gradient(to bottom,rgba(0, 0, 0, 0.6),rgba(0, 0, 0, 0.8)), url(./images/background.jpg); -->
+![bg w:100% h:170%](./images/title.png)
 
 # Oh the (Methods) You Can (Make)
 
-By Dunder Seuss
+## By Dunder Seuss
 
-# About the author
+---
 
-...
+## About the author
+
+![width:200px](./images/author.png)
 
 <!--
 (1 minute)
@@ -40,33 +89,55 @@ and conference speaking... also by day.
 He's a lover of getting to know enough Python to make expressive, readable, and intuitive code.
 He wrote this book to teach others of the power and magic that you can bring to your objects to make them
 expressive, readable, and intuitive.
-
 -->
 
 ---
 
-For Dottie and Teddy, with Love
+## For Dottie and Teddy, with Love
 
 ---
 
-<!--
+<!-- transition: slide -->
 
+![bg 45%](./images/opening-snake.png)
+
+<!--
 Congratulations!
 Today is your day.
 You will soon learn you some magic,
 the good and proper way.
 
 You've chosen a wise way to spend your precious time
-by listening to some crazy loon go on in rhyme
+by learning from a crazy loon going on in rhyme
 about a list of methods that are nicknamed "the dunders"
 and how you'll use them to code great wonders
+-->
 
+---
+
+<!-- transition: swipe -->
+<!-- _class: lead magic -->
+
+`__magic__`
+
+![w:100 h:50 arrow1](./images/arrow.png)
+![w:100 h:50 arrow2](./images/arrow.png)
+
+<!--
 They start with two underscores, and end with two more
 thus "dunder" which is short for "double underscore"
 
 The runtime of Python calls them in many situations
 allowing _your_ objects many customizations
+-->
 
+---
+
+<!-- transition: slide -->
+
+![bg fit opacity:.7](./images/seuss1.png)
+
+<!--
 You'll learn all about how to emulate a container
 and iterators and numbers from a great explainer
 Comparisons, callables, and descriptors too,
@@ -80,16 +151,34 @@ you'll be so full of magic, you'll yell "please sir no more"!
 
 So with great skillful skill, and lots of caffeine
 let's start off your learning... with a method you've seen
+-->
 
 ---
 
+<!-- transition: swipe -->
+
+```python
+def __init__(self, ...) -> None:
+    self.x = ...
+    self.y = ...
+```
+
+<!--
 Let's pretend you're new to Python, just for a minute
 you'll then learn the first magic: `__init__`
 It is almost every object's _initializer_,
 allowing you to be an attribute organizer
 adding new attributes to your fresh new object.
 The most common magic, I truly do suspect.
+-->
 
+---
+
+<!-- transition: slide -->
+
+![h:500px w:500px](./images/confused-snake.png)
+
+<!--
 But,
 where did `self` come from?
 You'll soon start to wonder
@@ -97,28 +186,75 @@ You'll soon start to wonder
 Then you'll learn that its created by just another 'dunder
 One that _constructs_ the blank object to give to you
 And it's name, you'll soon find, is `__new__`.
+-->
 
+---
+
+<!-- transition: swipe -->
+
+```python
+def __new__(cls):
+    self = super().__new__(cls)
+    return self  # --> __init__(self, ...)
+
+def __new__(cls):
+    return 1  # --> caller
+```
+
+<!--
 It's a special static method you'll maybe define in your class
 which returns _some_ object, then onward its passed,
 to whom it turns out depends on the returned object's type
 if its an instance of your class (including a possible subtype)
 "it goes to `__init__`" you'll hear from the scholar
 "but otherwise", he'll says, "it's back to the caller"
+-->
 
+---
+
+<!-- transition: slide -->
+
+```python
+def __new__(cls, *args, **kwargs):
+    cls = (
+        WindowsPath if os.name == 'nt'
+        else PosixPath
+    )
+    return object.__new__(cls)
+```
+
+<!--
 You'll see this in action, and it'll be more clear-y
 by looking for it's use in the standard library
 `pathlib.Path` uses this method to help it perform
 constructing an object specific to _your_ platform.
 The type, as you'll find, has defined `__new__`,
 to return a subclass' instance specific to _you_.
+-->
 
+---
+
+<!-- transition: swipe -->
+
+[[idk]]
+
+<!--
 Now, with great careful care, and great tactful tact,
 you'll see using it is a great balancing act.
 A magic with the power to create objects that are new,
 is something to avoid misuse of, too.
+-->
 
 ---
 
+<!-- transition: slide -->
+
+```python
+def __del__(self):
+    ...
+```
+
+<!--
 And speaking of balance...
 
 the opposite of `__new__` is not oft employed,
@@ -126,15 +262,25 @@ the opposite of `__new__` is not oft employed,
 You'll use it to release resources you've acquired
 but only if you want, its definition isn't _required_
 But if you do write it, heed this warning as well,
-you __MUST__ call your `super()`'s `__del__`.
+you **MUST** call your `super()`'s `__del__`.
+-->
 
 ---
 
+<!-- transition: slide -->
+
+<!--
 The next set of magics involve conjuring illusions,
 of attributes, giving your callers delusions
 that your object has more (or less) than it does
 why? friendly interfaces is likely the because.
+-->
 
+---
+
+<!-- transition: slide -->
+
+<!--
 First on your journey through attribute emulation,
 `__getattr__` is the proper incantation
 you'll type it out with a flick and a twist
@@ -145,32 +291,52 @@ You'll get a chance to pretend it existed
 However, on your object, the attribute isn't persisted.
 Now, if you wish to pretend you don't recognize this `name`,
 `raise AttributeError` emulates that all the same.
+-->
 
+---
+
+<!-- transition: slide -->
+
+<!--
 It has an alter-ego, named `__getattribute__`, you'll see
 which is called for all access, _unconditionally_
 It gets called for names both existing and not,
 but beware, infinite recursion is easily got.
 So remember when you need to access your attributes inside of this thing,
 you wont use `self.`, you'll give your `super()` a ring
+-->
 
+---
+
+<!-- transition: slide -->
+
+<!--
 To juxtapose "get", `__setattr__` is how,
 attribute _setting_, your classes allow.
 Again, by default the attribute isn't persisted,
 you get to choose whether it becomes listed.
 This is also called for all attributes without any condition,
 (whether it exists or not) without your permission.
+-->
 
+---
+
+<!-- transition: slide -->
+
+<!--
 The last of the attr methods, you'll maybe leave off,
 define `__delattr__`, and people might scoff.
 As you'll probably guess its good for emulation
 of the removal of a name from your object's formation.
 And just like `__setattr__`'s unfortunate asymmetry,
 it gets called for all names, unconditionally.
-
-[[ __dir__?]]
+-->
 
 ---
 
+<!-- transition: slide -->
+
+<!--
 You'll then find out soon enough,
 that when it comes to illusory stuff
 attribute names is just where it starts
@@ -184,7 +350,13 @@ The second in our trio-of-trios, I'll teach to you now,
 these methods are so powerful. You'll see how,
 an attribute gets to customize _itself_
 instead of sitting _static_ on some other object's shelf.
+-->
 
+---
+
+<!-- transition: slide -->
+
+<!--
 "Descriptors" is the name given to this technique
 of attributes themselves, using doublespeak.
 
@@ -192,24 +364,48 @@ First these things work as attributes of a class
 (you'll see Django and SQLAlchemy use this en masse)
 The "descriptor" is the attribute, and it gets a say
 on how _it_ gets gotted, setted, and deleted, per se
+-->
 
+---
+
+<!-- transition: slide -->
+
+<!--
 `__get__` is the first of these spells you'll want to perfect
 conjuring values for attributes based on the caller's object
 (or sometimes the class, as callers sometimes will do,
 using class attribute lookup, so support that too).
+-->
 
+---
+
+<!-- transition: slide -->
+
+<!--
 You've maybe have wondered, and even had a theory,
 how SQL ORM's quickly fire off a query,
 when you've run something like `my_user.amount_in_debt`
 the "Column" "descriptor" is leveraging `__get__`
 to run a SQL query, using `my_user`'s ID,
 and return to you the value (and maybe cache it, you see)
+-->
 
+---
+
+<!-- transition: slide -->
+
+<!--
 Just like `__getattr__`, `__get__` has two brothers,
 `__set__` and `__delete__` are the others.
 They act just like `__get__` in proxying a call,
 and can do anything they want, both big and small.
+-->
 
+---
+
+<!-- transition: slide -->
+
+<!--
 For metaphorical purposes, let's finish our "Column" story,
 and see how these methods are very applicatory,
 
@@ -218,7 +414,13 @@ A SQL `UPDATE` is likely used for new value enshrinement
 
 And `__delete__` when an attribute is told to go bye-bye
 a SQL `DELETE` you'll likely see fly by.
+-->
 
+---
+
+<!-- transition: slide -->
+
+<!--
 There's one more method, that plays in the "descriptor" game,
 and it's a method that goes by `__set_name__`
 our "trio" really is four, oh well, what a shame.
@@ -227,14 +429,24 @@ At the end of your class definition, you see,
 for all of the class attributes that be,
 if they define a `__set_name__`,
 the attribute's name, Python will disclaim.
+-->
 
+---
+
+<!-- transition: slide -->
+
+<!--
 And thus the _attribute_ shell game, now comes to a close
 the illusions of _attributes_, we have now exposed
 the last trio-of-trios, you'll learn from your trainer,
 is emulating _items_ inside of a container
+-->
 
 ---
 
+<!-- transition: slide -->
+
+<!--
 You'll see this time our trio's suffix is `item`,
 to help quack like containers with things inside 'em
 
@@ -257,25 +469,49 @@ and in every case, if you you reject the key's type
 You'll likely learn too,
 those rules still hold true,
 for the other methods two
+-->
 
+---
+
+<!-- transition: slide -->
+
+<!--
 And, as far as semantics go, there are a few more dunders
 you'll want to define, lest you commit several blunders
 
 So although our trio of trios may have come to a close
 you'll want to learn the other container methods I suppose.
+-->
 
+---
+
+<!-- transition: slide -->
+
+<!--
 A quick one that you'll want to define,
 is `__len__` which helps Python divine
 the length of your container, so when people cal `len`,
 Python can return the number back to them.
+-->
 
+---
+
+<!-- transition: slide -->
+
+<!--
 The second one is `__iter__`, which should return an iterator
 over the objects that all live inside your object container,
 unless its a mapping then what your caller sees,
 is simply all of the mapping's keys.
 There's also this trivia, a bit of Python fun,
 if your container isn't iterable, set `__iter__` to `None`!
+-->
 
+---
+
+<!-- transition: slide -->
+
+<!--
 Now, third on our extras is named `__contains__`,
 to support things like `if "thomas" in all_of_the_trains`.
 Although technically, you don't have to define it, Python won't be bitter
@@ -288,20 +524,38 @@ using incrementing indexes from 0 until it then gets
 an `IndexError` exception or an equal/same object.
 So it's best to define it, so you'll have control,
 just how the object membership test will unroll.
+-->
 
+---
+
+<!-- transition: slide -->
+
+<!--
 And if for optional methods you'll have started to thirst,
 another one available is `__reversed__`.
 It returns an iterator for doing backwards iteration,
 but you'll only define it, if you beat the default computation,
 that Python uses combining `__getitem__` and `__len__`
 indexing backwards to 0, and then...
+-->
 
+---
+
+<!-- transition: slide -->
+
+<!--
 There's one more optional method if you subclass `dict`
 `__missing__` can be defined so that `__getitem__` can predict
 what value to use, if the key in your mapping isnt yet there
 It's how `collections.` `defaultdict` or `Counter`, with care
 support operations on items conjured out of thin air
+-->
 
+---
+
+<!-- transition: slide -->
+
+<!--
 You'll find that you're done,
 you've mastered container emulation
 But your next set of magics form quite the combination
@@ -313,9 +567,13 @@ that the list of operators is biggering and biggering
 
 The first giant list, you'll very soon encumber
 it's the list of operators supported on a number
+-->
 
 ---
 
+<!-- transition: slide -->
+
+<!--
 Let's start with just one that you can define,
 `__add__` lets you support the plus sign
 when your object is on the left with whatevers on the right
@@ -324,7 +582,13 @@ reject the operation, because you don't know what to do,
 and instead return the `NotImplemented` singleton value
 such is the case if you dont recognize the type
 of whatever the thing is on the right.
+-->
 
+---
+
+<!-- transition: slide -->
+
+<!--
 Then...
 
 `__sub__` for subtraction, `__mul__` for times,
@@ -345,22 +609,40 @@ three more dunder methods will came along
 they're how you support ampersand, caret and pipe.
 And then, when your object supports the at-symbol,
 the method you'll want is named `__matmul__`
+-->
 
+---
+
+<!-- transition: slide -->
+
+<!--
 AND THEN, that was it, there won't be more later
 FOURTEEN methods for numeric operators,
 
 unless...
 
 Unless you think that there isn't enough.
-[[ Here let's take a poll, is there other number stuff
-we need to define? If yes raise your hand ]]
+[[Here let's take a poll, is there other number stuff
+we need to define? If yes raise your hand]]
 I see. I suppose our list should expand.
+-->
 
+---
+
+<!-- transition: slide -->
+
+<!--
 You'll maybe be asking yourself "O' teacher, how come?"
 You'll ask yourself where these new methods are from
 and how come my methods sometimes return `NotImplemented`,
 if, to my caller, a `TypeError` is presented?
+-->
 
+---
+
+<!-- transition: slide -->
+
+<!--
 And so our list of methods then expands,
 to support the same things with swapped operands,
 but only if the result is `NotImplemented`
@@ -369,7 +651,13 @@ Python tries again but this time with an "R",
 at the front of the name, (it's not _that_ bizarre)
 and calls this other method on the thing on the right,
 let's see an example to bring how this works to light
+-->
 
+---
+
+<!-- transition: slide -->
+
+<!--
 Let's say someone subtracts from a `tuple` your `Foo`,
 well `tuple` doesn't know what the heck to do,
 so it's `__sub__`, then returns `NotImplemented`,
@@ -384,9 +672,15 @@ and try not to mix up a right "op" with a left,
 when in an "r-method" you're the one on the right
 getting this correct will make you seem bright
 
-[[ How about another poll? That last one was fun.
-Who thinks our numeric operator list is done? ]]
+[[How about another poll? That last one was fun.
+Who thinks our numeric operator list is done?]]
+-->
 
+---
+
+<!-- transition: slide -->
+
+<!--
 Me neither. As it turns out, and you'll see soon enough see
 all but one of these operators' support requires THREE.
 THREE dunders, at most, for each of these things
@@ -405,9 +699,13 @@ then `x = x + y` will be the fallbacking
 
 If you kept watch, you might think I left one for later,
 but no, `__divmod__` has no in-place operator.
+-->
 
 ---
 
+<!-- transition: slide -->
+
+<!--
 Now, oh baby oh, how the operator list will still grow!
 Regardless of lengthy class definitions you know.
 You'll complain, and you'll curse, and you might even swear,
@@ -427,14 +725,24 @@ a True or False as a return is the way.
 
 Or anything truthy or falsey is ok,
 it's turned into a boolean the Pythonic way.
+-->
 
+---
+
+<!-- transition: slide -->
+
+<!--
 Oh wait, forgive me, that's actually a new dunder
 magics on magics, isn't Python a wonder.
 If you want to make your object seem `Falsey` or `True`?
 You'll have to define `__bool__` too.
+-->
 
 ---
 
+<!-- transition: slide -->
+
+<!--
 Last ones on our list (and yes it is still growing,
 brevity, at this point we are simply forgoing)
 You'll only need four more, so no need to get wary,
@@ -447,7 +755,13 @@ That's it, you'll think, our list is complete.
 And you're right, I think, now isn't that neat
 55-ish methods to support the operators
 no list of magics in one section is greater
+-->
 
+---
+
+<!-- transition: slide -->
+
+<!--
 Actually, not true, as you'll find out
 emulating a number gets to tout
 the longest list of required magic capitulators
@@ -455,38 +769,49 @@ because in addition to most of those operators
 there's even more you'll want to support, you'll see
 numbers, I guess, just have lots of flexibility
 
----
 
 From mathematics, the list adds on four,
-__round, trunc, ceil and floor.
+\_\_round, trunc, ceil and floor.
 What these methods each do, you'll notice is visible,
 truncating the value into an `Integral`
 
 Then, from a number you'll have several excursions,
 if your object supports any of several conversions.
 
-`__complex, int, float, bytes, and str
+`\_\_complex, int, float, bytes, and str
 are magics which Python will look and refer
 to make the type conversion occur
+-->
 
 ---
 
+<!-- transition: slide -->
+
+<!--
 And speaking of strings, they've got special magic too
 `__repr__` and `format` will be waiting for you
 `__repr__` returning the “official” string representation of your object
 an executable string of your object is what callers expect
 And for `__format__` you'll choose exactly how to trek
 through formatting your object, based on the spec
+-->
 
 ---
 
+<!-- transition: slide -->
+
+<!--
 The other magics all come in small lists,
 and in this tome, some of them won't exist,
 like the 11 methods for copying and/or pickling
 yet, here are some more, for you, coming in at a trickling
+-->
 
 ---
 
+<!-- transition: slide -->
+
+<!--
 If you want your object to quack like a function
 `__call__` is the callable magic junction
 
@@ -496,9 +821,13 @@ returning the next value, or the special terminator
 
 which goes by the name of `StopIteration`,
 you raise it when there's no more values in your formation
+-->
 
 ---
 
+<!-- transition: slide -->
+
+<!--
 And if you want something that supports use with `with`,
 `__enter-` and `exit`, says the wordsmith
 The former is issued right before the inner scope
@@ -509,9 +838,13 @@ This method has power, in multiple ways,
 it can release acquired resources always,
 but it also gets a chance to suppress an exception
 `return True` to complete the interception
+-->
 
 ---
 
+<!-- transition: slide -->
+
+<!--
 And then there are some, which feels kinda wacky,
 defining them sometimes feels a bit tacky
 `__init_subclass__` if defining it you have dared
@@ -521,18 +854,26 @@ and was added to wean off some use of metaclasses
 
 And speaking of metaclasses there's `__prepare__`
 on second thought, you'll not want to go there...
+-->
 
 ---
 
+<!-- transition: slide -->
+
+<!--
 The last set of magics on this magicallest of treks
 are for hooks into instance and subclass checks
 That's right, the objects you write actually gets a say,
 on the answer of `isinstance` and `issubclass`: yay or nay
 However, these are looked up on the type of your class.
 (Ugh metaclasses, How about we pass?)
+-->
 
 ---
 
+<!-- transition: slide -->
+
+<!--
 And actually that's it, no more magic I'll disclose
 your journey, you've journeyed now comes to a close
 
@@ -546,5 +887,4 @@ remember the things I rememembered to you today,
 and write all your code, the good, Pythonic way.
 
 The End.
-
 -->
