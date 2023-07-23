@@ -48,6 +48,10 @@ footer {
   transform: translate(0, 15%);
 }
 
+ul > li {
+    list-style-type: none;
+}
+
 #oh-the-methods-you-can-make {
   transform: translate(0, -220%);
 }
@@ -711,6 +715,11 @@ you'll want to learn the other container methods I suppose.
 
 <!-- transition: slide -->
 
+```python
+def __len__(self) -> int:
+    ...
+```
+
 <!--
 A quick one that you'll want to define,
 is `__len__` which helps Python divine
@@ -721,6 +730,11 @@ Python can return the number back to them.
 ---
 
 <!-- transition: slide -->
+
+```python
+def __iter__(self) -> Iterator[...]:
+    ...
+```
 
 <!--
 The second one is `__iter__`, which should return an iterator
@@ -735,13 +749,51 @@ if your container isn't iterable, set `__iter__` to `None`!
 
 <!-- transition: slide -->
 
+```python
+def __contains__(self, item) -> bool:
+    ...
+```
+
 <!--
 Now, third on our extras is named `__contains__`,
-to support things like `if "thomas" in all_of_the_trains`.
+to test if an object, your container maintains
 Although technically, you don't have to define it, Python won't be bitter
+-->
+
+---
+
+<!-- transition: slide -->
+
+```python
+# Otherwise
+for elem in obj:  # __iter__
+    if elem is test or elem == test:
+        return True
+return False
+```
+
+<!--
 Instead it'll test membership first using `__iter__`.
 Going over every possible object that your object can contain,
 and asking if any of those objects are equal or the same.
+-->
+
+---
+
+<!-- transition: slide -->
+
+```python
+# Otherwise
+while True:
+    try:
+        elem = obj[i]  # __getitem__
+    except IndexError:
+        return False
+    if elem is test or elem == test:
+        return True
+```
+
+<!--
 But if you also don't define a `__iter__` method,
 `__getitem__` is called and repeatedly tested,
 using incrementing indexes from 0 until it then gets
@@ -754,10 +806,28 @@ just how the object membership test will unroll.
 
 <!-- transition: slide -->
 
+```python
+def __reversed__(self) -> Iterator[...]:
+    ...
+```
+
 <!--
 And if for optional methods you'll have started to thirst,
 another one available is `__reversed__`.
 It returns an iterator for doing backwards iteration,
+-->
+
+---
+
+<!-- transition: slide -->
+
+```python
+# Otherwise
+for i in range(len(obj) -1, -1):  # __len__
+    yield obj[i]  # __getitem__
+```
+
+<!--
 but you'll only define it, if you beat the default computation,
 that Python uses combining `__getitem__` and `__len__`
 indexing backwards to 0, and then...
@@ -767,17 +837,26 @@ indexing backwards to 0, and then...
 
 <!-- transition: slide -->
 
+```python
+def __missing__(self, key):
+    ...
+```
+
 <!--
 There's one more optional method if you subclass `dict`
 `__missing__` can be defined so that `__getitem__` can predict
 what value to use, if the key in your mapping isnt yet there
 It's how `collections.` `defaultdict` or `Counter`, with care
-support operations on items conjured out of thin air
+support operations on items conjured out of thin air.
+Python just returns to your caller, the value itself,
+so if you want to, dont forget to store it in yourself.
 -->
 
 ---
 
 <!-- transition: slide -->
+
+[[numbers]]
 
 <!--
 You'll find that you're done,
@@ -797,6 +876,13 @@ it's the list of operators supported on a number
 
 <!-- transition: slide -->
 
+```python
+def __add__(self, right):
+    if not isinstance(right, MyType):
+        return NotImplemented
+    return ...
+```
+
 <!--
 Let's start with just one that you can define,
 `__add__` lets you support the plus sign
@@ -811,6 +897,77 @@ of whatever the thing is on the right.
 ---
 
 <!-- transition: slide -->
+
+<style scoped>
+section {
+    padding-top: 150px;
+    padding-left: 60px;
+    padding-right: 60px;
+    display:grid;
+    grid-template-columns: 50% 50%;
+}
+ul {
+    margin-top: 0;
+}
+section > ul > li {
+    font-size: 80%
+}
+li code {
+    color: #89bdff;
+    margin: 0 5px 0 5px;
+    padding: 0 0 0 0;
+}
+li > code:nth-child(2) {
+    color: #3e87e3;
+}
+li > code:nth-child(4) {
+    color: orange;
+}
+/* divmod */
+ul:nth-child(1) > li:nth-child(7) > code:nth-child(2) {
+    color: #89bdff;
+    margin-right: -8px;
+}
+ul:nth-child(1) > li:nth-child(7) > code:nth-child(3) {
+    margin-left: 0px;
+    margin-right: -8px;
+    color: #3e87e3;
+}
+ul:nth-child(1) > li:nth-child(7) > code:nth-child(4) {
+    margin-left: 0px;
+    margin-right: 0px;
+    color: #89bdff;
+}
+ul:nth-child(1) > li:nth-child(7) > code:nth-child(5) {
+    margin-left: 0px;
+    margin-right: 0px;
+    color: orange;
+}
+ul:nth-child(1) > li:nth-child(7) > code:nth-child(6) {
+    margin-left: -10px;
+    margin-right: 0px;
+    color: #89bdff;
+}
+
+</style>
+
+<!-- prettier-ignore -->
+* `__add__` -> `obj` `+` `right`
+* `__sub__` -> `obj` `-` `right`
+* `__mul__` -> `obj` `*` `right`
+* `__truediv__` -> `obj` `/` `right`
+* `__floordiv__` -> `obj` `//` `right`
+* `__mod__` -> `obj` `%` `right`
+* `__divmod__` -> `divmod(` `obj` `,` `right` `)`
+
+<!-- prettier-ignore -->
+* `__lshift__` -> `obj` `<<` `right`
+* `__rshift__` -> `obj` `>>` `right`
+* `__pow__` -> `obj` `**` `right`
+* `__and__` -> `obj` `&` `right`
+* `__xor__` -> `obj` `^` `right`
+* `__or__` -> `obj` `|` `right`
+* `__matmul__` -> `obj` `@` `right`
 
 <!--
 Then...
@@ -839,6 +996,8 @@ the method you'll want is named `__matmul__`
 
 <!-- transition: slide -->
 
+[[idk]]
+
 <!--
 AND THEN, that was it, there won't be more later
 FOURTEEN methods for numeric operators,
@@ -855,6 +1014,8 @@ I see. I suppose our list should expand.
 
 <!-- transition: slide -->
 
+[[???]]
+
 <!--
 You'll maybe be asking yourself "O' teacher, how come?"
 You'll ask yourself where these new methods are from
@@ -865,6 +1026,16 @@ if, to my caller, a `TypeError` is presented?
 ---
 
 <!-- transition: slide -->
+
+```python
+# Otherwise
+if not (
+    subclass(left, type(right))
+    or subclass(right, type(left))
+):
+    # --> __r-
+
+```
 
 <!--
 And so our list of methods then expands,
@@ -881,6 +1052,13 @@ let's see an example to bring how this works to light
 
 <!-- transition: slide -->
 
+```python
+tuple() - Foo()
+# ==>
+def __rsub__(self, left):
+    ...
+```
+
 <!--
 Let's say someone subtracts from a `tuple` your `Foo`,
 well `tuple` doesn't know what the heck to do,
@@ -896,6 +1074,127 @@ and try not to mix up a right "op" with a left,
 when in an "r-method" you're the one on the right
 getting this correct will make you seem bright
 
+-->
+
+---
+
+<!-- transition: slide -->
+
+<style scoped>
+section {
+    padding-top: 70px;
+    padding-left: 60px;
+    padding-right: 60px;
+    display:grid;
+    grid-template-columns: 50% 50%;
+}
+ul {
+    margin-top: 0;
+}
+section > ul > li {
+    font-size: 65%
+}
+li code {
+    color: #89bdff;
+    margin: 0 5px 0 5px;
+    padding: 0 0 0 0;
+}
+ul:nth-child(1) > li > code:nth-child(2) {
+    color: #3e87e3;
+}
+ul:nth-child(1) > li > code:nth-child(4) {
+    color: orange;
+}
+/* divmod */
+ul:nth-child(1) > li:nth-child(7) > code:nth-child(2) {
+    color: #89bdff;
+    margin-right: -8px;
+}
+ul:nth-child(1) > li:nth-child(7) > code:nth-child(3) {
+    margin-left: 0px;
+    margin-right: -8px;
+    color: #3e87e3;
+}
+ul:nth-child(1) > li:nth-child(7) > code:nth-child(4) {
+    margin-left: 0px;
+    margin-right: 0px;
+    color: #89bdff;
+}
+ul:nth-child(1) > li:nth-child(7) > code:nth-child(5) {
+    margin-left: 0px;
+    margin-right: 0px;
+    color: orange;
+}
+ul:nth-child(1) > li:nth-child(7) > code:nth-child(6) {
+    margin-left: -10px;
+    margin-right: 0px;
+    color: #89bdff;
+}
+ul:nth-child(2) > li > code:nth-child(2) {
+    color: orange;
+}
+ul:nth-child(2) > li > code:nth-child(4) {
+    color: #3e87e3;
+}
+/* divmod */
+ul:nth-child(2) > li:nth-child(7) > code:nth-child(2) {
+    color: #89bdff;
+    margin-right: -8px;
+}
+ul:nth-child(2) > li:nth-child(7) > code:nth-child(3) {
+    margin-left: 0px;
+    margin-right: -8px;
+    color: orange;
+}
+ul:nth-child(2) > li:nth-child(7) > code:nth-child(4) {
+    margin-left: 0px;
+    margin-right: 0px;
+    color: #89bdff;
+}
+ul:nth-child(2) > li:nth-child(7) > code:nth-child(5) {
+    margin-left: 0px;
+    margin-right: 0px;
+    color: #3e87e3;
+}
+ul:nth-child(2) > li:nth-child(7) > code:nth-child(6) {
+    margin-left: -10px;
+    margin-right: 0px;
+    color: #89bdff;
+}
+</style>
+
+- `__add__` -> `obj` `+` `right`
+- `__sub__` -> `obj` `-` `right`
+- `__mul__` -> `obj` `*` `right`
+- `__truediv__` -> `obj` `/` `right`
+- `__floordiv__` -> `obj` `//` `right`
+- `__mod__` -> `obj` `%` `right`
+- `__divmod__` -> `divmod(` `obj` `,` `right` `)`
+- `__lshift__` -> `obj` `<<` `right`
+- `__rshift__` -> `obj` `>>` `right`
+- `__pow__` -> `obj` `**` `right`
+- `__and__` -> `obj` `&` `right`
+- `__xor__` -> `obj` `^` `right`
+- `__or__` -> `obj` `|` `right`
+- `__matmul__` -> `obj` `@` `right`
+
+<!-- prettier-ignore -->
+- `__radd__` -> `left` `+` `obj`
+- `__rsub__` -> `left` `-` `obj`
+- `__rmul__` -> `left` `*` `obj`
+- `__rtruediv__` -> `left` `/` `obj`
+- `__rfloordiv__` -> `left` `//` `obj`
+- `__rmod__` -> `left` `%` `obj`
+- `__rdivmod__` -> `divmod(` `left` `,` `obj` `)`
+- `__rlshift__` -> `left` `<<` `obj`
+- `__rrshift__` -> `left` `>>` `obj`
+- `__rpow__` -> `left` `**` `obj`
+- `__rand__` -> `left` `&` `obj`
+- `__rxor__` -> `left` `^` `obj`
+- `__ror__` -> `left` `|` `obj`
+- `__rmatmul__` -> `left` `@` `obj`
+
+<!--
 [[How about another poll? That last one was fun.
 Who thinks our numeric operator list is done?]]
 -->
@@ -909,18 +1208,185 @@ Me neither. As it turns out, and you'll see soon enough see
 all but one of these operators' support requires THREE.
 THREE dunders, at most, for each of these things
 what _joy_ to us, supporting operators brings
+-->
 
+---
+
+<!-- transition: slide -->
+
+```python
+x += 0
+# ==>
+def __iadd__(self, other):
+    ...
+```
+
+<!--
 "So what sets _these_ apart?" You'll groan and you'll grunt.
 These last set of thirteen has an "i" in the front.
 They're meant to support doing the math "in-place",
 mutating the object given in the left space,
 for instance, `+=` uses `__iadd__`,
 (completing the addition support triad).
+-->
+
+---
+
+<!-- transition: slide -->
+
+```python
+# Otherwise
+x = x + y
+```
+
+<!--
 However these methods you can actually omit,
 they're there to help avoid copies a bit,
 if one of these methods your type is lacking,
 then `x = x + y` will be the fallbacking
+-->
 
+---
+
+<!-- transition: slide -->
+
+<style scoped>
+section {
+    padding-top: 100px;
+    padding-left: 60px;
+    padding-right: 60px;
+    display:grid;
+    grid-template-columns: 33.33% 33.33% 33.33%;
+}
+ul {
+    margin-top: 0;
+}
+section > ul > li {
+    font-size: 50%
+}
+li code {
+    color: #89bdff;
+    margin: 0 5px 0 5px;
+    padding: 0 0 0 0;
+}
+ul:nth-child(1) > li > code:nth-child(2) {
+    color: #3e87e3;
+}
+ul:nth-child(1) > li > code:nth-child(4) {
+    color: orange;
+}
+/* divmod */
+ul:nth-child(1) > li:nth-child(7) > code:nth-child(2) {
+    color: #89bdff;
+    margin-right: -8px;
+}
+ul:nth-child(1) > li:nth-child(7) > code:nth-child(3) {
+    margin-left: 0px;
+    margin-right: -8px;
+    color: #3e87e3;
+}
+ul:nth-child(1) > li:nth-child(7) > code:nth-child(4) {
+    margin-left: 0px;
+    margin-right: 0px;
+    color: #89bdff;
+}
+ul:nth-child(1) > li:nth-child(7) > code:nth-child(5) {
+    margin-left: 0px;
+    margin-right: 0px;
+    color: orange;
+}
+ul:nth-child(1) > li:nth-child(7) > code:nth-child(6) {
+    margin-left: -10px;
+    margin-right: 0px;
+    color: #89bdff;
+}
+ul:nth-child(2) > li > code:nth-child(2) {
+    color: orange;
+}
+ul:nth-child(2) > li > code:nth-child(4) {
+    color: #3e87e3;
+}
+/* divmod */
+ul:nth-child(2) > li:nth-child(7) > code:nth-child(2) {
+    color: #89bdff;
+    margin-right: -8px;
+}
+ul:nth-child(2) > li:nth-child(7) > code:nth-child(3) {
+    margin-left: 0px;
+    margin-right: -8px;
+    color: orange;
+}
+ul:nth-child(2) > li:nth-child(7) > code:nth-child(4) {
+    margin-left: 0px;
+    margin-right: 0px;
+    color: #89bdff;
+}
+ul:nth-child(2) > li:nth-child(7) > code:nth-child(5) {
+    margin-left: 0px;
+    margin-right: 0px;
+    color: #3e87e3;
+}
+ul:nth-child(2) > li:nth-child(7) > code:nth-child(6) {
+    margin-left: -10px;
+    margin-right: 0px;
+    color: #89bdff;
+}
+ul:nth-child(3) > li > code:nth-child(2) {
+    color: #3e87e3;
+}
+ul:nth-child(3) > li > code:nth-child(4) {
+    color: orange;
+}
+</style>
+
+- `__add__` -> `obj` `+` `right`
+- `__sub__` -> `obj` `-` `right`
+- `__mul__` -> `obj` `*` `right`
+- `__truediv__` -> `obj` `/` `right`
+- `__floordiv__` -> `obj` `//` `right`
+- `__mod__` -> `obj` `%` `right`
+- `__divmod__` -> `divmod(` `obj` `,` `right` `)`
+- `__lshift__` -> `obj` `<<` `right`
+- `__rshift__` -> `obj` `>>` `right`
+- `__pow__` -> `obj` `**` `right`
+- `__and__` -> `obj` `&` `right`
+- `__xor__` -> `obj` `^` `right`
+- `__or__` -> `obj` `|` `right`
+- `__matmul__` -> `obj` `@` `right`
+
+<!-- prettier-ignore -->
+- `__radd__` -> `left` `+` `obj`
+- `__rsub__` -> `left` `-` `obj`
+- `__rmul__` -> `left` `*` `obj`
+- `__rtruediv__` -> `left` `/` `obj`
+- `__rfloordiv__` -> `left` `//` `obj`
+- `__rmod__` -> `left` `%` `obj`
+- `__rdivmod__` -> `divmod(` `left` `,` `obj` `)`
+- `__rlshift__` -> `left` `<<` `obj`
+- `__rrshift__` -> `left` `>>` `obj`
+- `__rpow__` -> `left` `**` `obj`
+- `__rand__` -> `left` `&` `obj`
+- `__rxor__` -> `left` `^` `obj`
+- `__ror__` -> `left` `|` `obj`
+- `__rmatmul__` -> `left` `@` `obj`
+
+<!-- prettier-ignore -->
+- `__iadd__` -> `obj` `+=` `other`
+- `__isub__` -> `obj` `-=` `other`
+- `__imul__` -> `obj` `*=` `other`
+- `__itruediv__` -> `obj` `/=` `other`
+- `__ifloordiv__` -> `obj` `//=` `other`
+- `__imod__` -> `obj` `%=` `other`
+- (no `__idivmod__`)
+- `__ilshift__` -> `obj` `<<=` `other`
+- `__irshift__` -> `obj` `>>=` `other`
+- `__ipow__` -> `obj` `**=` `other`
+- `__iand__` -> `obj` `&=` `other`
+- `__ixor__` -> `obj` `^=` `other`
+- `__ior__` -> `obj` `|=` `other`
+- `__imatmul__` -> `obj` `@=` `other`
+
+<!--
 If you kept watch, you might think I left one for later,
 but no, `__divmod__` has no in-place operator.
 -->
@@ -929,11 +1395,44 @@ but no, `__divmod__` has no in-place operator.
 
 <!-- transition: slide -->
 
+[[compare]]
+
 <!--
 Now, oh baby oh, how the operator list will still grow!
 Regardless of lengthy class definitions you know.
 You'll complain, and you'll curse, and you might even swear,
 but you'll still need to learn the dunders to _compare_
+-->
+
+---
+
+<!-- transition: slide -->
+
+<style scoped>
+section {
+    padding-left: 30%;
+}
+li code {
+    color: #89bdff;
+    margin: 0 5px 0 5px;
+    padding: 0 0 0 0;
+}
+li > code:nth-child(2) {
+    color: #3e87e3;
+}
+li > code:nth-child(4) {
+    color: orange;
+}
+</style>
+
+- `__lt__` -> `obj` `<` `right`
+- `__le__` -> `obj` `<=` `right`
+- `__eq__` -> `obj` `==` `right`
+- `__ne__` -> `obj` `!=` `right`
+- `__gt__` -> `obj` `>` `right`
+- `__ge__` -> `obj` `>=` `right`
+
+<!--
 
 The names of these methods really aren't at all surprising,
 the brevity of each name is what's really quite appetizing,
@@ -942,6 +1441,11 @@ for operations equality, lesser, and greater.
 
 And exactly like the methods that I just reported
 they return `NotImplemented` if the comparison isn't supported,
+
+And if you want, `__ne__` you can simply omit,
+`__eq__` if defined, will be tested a bit
+and the return is inverted, unless `NotImplemented`
+
 however this time there's no crazy switch-a-roo,
 in this case a `TypeError` is raised unto you
 And in the case the comparison is ok
@@ -955,16 +1459,45 @@ it's turned into a boolean the Pythonic way.
 
 <!-- transition: slide -->
 
+```python
+def __bool__(self) -> bool:
+    ...
+```
+
 <!--
 Oh wait, forgive me, that's actually a new dunder
 magics on magics, isn't Python a wonder.
 If you want to make your object seem `Falsey` or `True`?
 You'll have to define `__bool__` too.
+Unless perhaps you define a `__len__`,
+An empty container is Falsey, then.
 -->
 
 ---
 
 <!-- transition: slide -->
+
+<style scoped>
+section {
+    padding-left: 30%;
+}
+li code {
+    color: #89bdff;
+    margin: 0 5px 0 5px;
+    padding: 0 0 0 0;
+}
+li > code:nth-child(3) {
+    color: #3e87e3;
+}
+li > code:nth-child(4) {
+    color: #89bdff;
+}
+</style>
+
+- `__neg__` -> `-` `obj`
+- `__pos__` -> `+` `obj`
+- `__abs__` -> `abs(` `obj` `)`
+- `__invert__` -> `~` `obj`
 
 <!--
 Last ones on our list (and yes it is still growing,
@@ -985,6 +1518,8 @@ no list of magics in one section is greater
 
 <!-- transition: slide -->
 
+[[number?]]
+
 <!--
 Actually, not true, as you'll find out
 emulating a number gets to tout
@@ -992,8 +1527,41 @@ the longest list of required magic capitulators
 because in addition to most of those operators
 there's even more you'll want to support, you'll see
 numbers, I guess, just have lots of flexibility
+-->
 
+---
 
+<!-- transition: slide -->
+
+<style scoped>
+section {
+    padding-left: 10%;
+}
+li code {
+    color: black;
+    margin: 0 0 0 0;
+    padding: 0 0 0 0;
+}
+li > code:nth-child(1) {
+    color: #3e87e3;
+}
+li > code:nth-child(3) {
+    color: #3e87e3;
+}
+li > code:nth-child(4) {
+    color: black;
+}
+li > code:last-child {
+    color: green;
+}
+</style>
+
+- `__round__` `(` `self, ndigits` = `None)` `->` `Integral`
+- `__trunc__` `(` `self` `)` `-> Integral`
+- `__ceil__` `(` `self` `)` `-> Integral`
+- `__floor__` `(` `self` `)` `-> Integral`
+
+<!--
 From mathematics, the list adds on four,
 \_\_round, trunc, ceil and floor.
 What these methods each do, you'll notice is visible,
@@ -1001,7 +1569,41 @@ truncating the value into an `Integral`
 
 Then, from a number you'll have several excursions,
 if your object supports any of several conversions.
+-->
 
+---
+
+<!-- transition: slide -->
+
+<style scoped>
+section {
+    padding-left: 25%;
+}
+li code {
+    color: black;
+    margin: 0 0 0 0;
+    padding: 0 0 0 0;
+}
+li > code:nth-child(1) {
+    color: #3e87e3;
+}
+li > code:nth-child(3) {
+    color: #3e87e3;
+}
+li > code:nth-child(4) {
+    color: black;
+}
+li > code:last-child {
+    color: green;
+}
+</style>
+
+- `__complex__` `(` `self` `)` `->` `complex`
+- `__int__` `(` `self` `)` `->` `int`
+- `__float__` `(` `self` `)` `->` `float`
+- `__str__` `(` `self` `)` `->` `str`
+
+<!--
 `\_\_complex, int, float, bytes, and str
 are magics which Python will look and refer
 to make the type conversion occur
@@ -1010,6 +1612,14 @@ to make the type conversion occur
 ---
 
 <!-- transition: slide -->
+
+```python
+def __repr__(self) -> str:
+    ...
+
+def __format__(self, format_spec: str) -> str:
+    ...
+```
 
 <!--
 And speaking of strings, they've got special magic too
@@ -1024,6 +1634,8 @@ through formatting your object, based on the spec
 
 <!-- transition: slide -->
 
+[[hmmm]]
+
 <!--
 The other magics all come in small lists,
 and in this tome, some of them won't exist,
@@ -1035,14 +1647,31 @@ yet, here are some more, for you, coming in at a trickling
 
 <!-- transition: slide -->
 
+```python
+def __call__(self, ...):
+    ...
+```
+
 <!--
 If you want your object to quack like a function
 `__call__` is the callable magic junction
+-->
 
+---
+
+<!-- transition: slide -->
+
+```python
+def __next__(self):
+    if ...:
+        raise StopIteration
+    return ...
+```
+
+<!--
 Or maybe you'll quack, perhaps like an iterator,
 `__next__` is the method for that imitator
 returning the next value, or the special terminator
-
 which goes by the name of `StopIteration`,
 you raise it when there's no more values in your formation
 -->
@@ -1050,6 +1679,17 @@ you raise it when there's no more values in your formation
 ---
 
 <!-- transition: slide -->
+
+```python
+def __enter__(self):
+    return self
+
+def __exit__(self, exc_type, exc_value, traceback):
+    if self.suppress:
+        return True
+    ...
+    return False
+```
 
 <!--
 And if you want something that supports use with `with`,
@@ -1068,6 +1708,14 @@ but it also gets a chance to suppress an exception
 
 <!-- transition: slide -->
 
+```python
+def __init_subclass__(cls, ...) -> None:
+    ...
+
+def __prepare__(mcls, name, bases, **kwds) -> Mapping:
+    ...
+```
+
 <!--
 And then there are some, which feels kinda wacky,
 defining them sometimes feels a bit tacky
@@ -1084,6 +1732,14 @@ on second thought, you'll not want to go there...
 
 <!-- transition: slide -->
 
+```python
+def __instancecheck__(cls, instance) -> bool:
+    ...
+
+def __subclasscheck__(cls, subclass) -> bool:
+    ...
+```
+
 <!--
 The last set of magics on this magicallest of treks
 are for hooks into instance and subclass checks
@@ -1096,6 +1752,8 @@ However, these are looked up on the type of your class.
 ---
 
 <!-- transition: slide -->
+
+[[yay]]
 
 <!--
 And actually that's it, no more magic I'll disclose
