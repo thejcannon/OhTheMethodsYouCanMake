@@ -5,6 +5,13 @@ theme: gaia
 transition: swipe
 class:
   - lead
+style: |
+  .hljs-built_in {
+      color: green
+  }
+  .hljs-literal {
+      color: green
+  }
 backgroundColor: white
 ---
 
@@ -26,14 +33,14 @@ h1, h2 {
 code, marp-pre {
   font-family: courier;
   color: black;
-  font-size: 200%;
+  font-size: 100%;
   background: none;
 }
 
 marp-pre {
   display: flex;
   justify-content: center;
-  transform: scale(3);
+  transform: scale(2.5);
 }
 
 footer {
@@ -54,11 +61,23 @@ footer {
 }
 
 [alt="arrow1"] {
-  transform: rotate(270deg) translate(0%, 300%);
+  transform: rotate(270deg) translate(0%, 150%);
 }
 
 [alt="arrow2"] {
-  transform: rotate(270deg) translate(60%, -300%);
+  transform: rotate(270deg) translate(60%, -150%);
+}
+
+[alt="arrow3"] {
+  transform: rotate(270deg) translate(-40%, 150%);
+}
+
+[alt="arrow4"] {
+  transform: rotate(60deg) translate(-50%, 190%);
+}
+
+[alt="arrow5"] {
+  transform: rotate(90deg) translate(-160%, 150%);
 }
 
 </style>
@@ -158,7 +177,7 @@ let's start off your learning... with a method you've seen
 <!-- transition: swipe -->
 
 ```python
-def __init__(self, ...) -> None:
+def __init__(self, ...): -> None:
     self.x = ...
     self.y = ...
 ```
@@ -194,7 +213,7 @@ And it's name, you'll soon find, is `__new__`.
 
 ```python
 def __new__(cls):
-    self = super().__new__(cls)
+    self = object.__new__(cls)
     return self  # --> __init__(self, ...)
 
 def __new__(cls):
@@ -236,7 +255,7 @@ to return a subclass' instance specific to _you_.
 
 <!-- transition: swipe -->
 
-[[idk]]
+![h:500px w:500px](./images/warning.png)
 
 <!--
 Now, with great careful care, and great tactful tact,
@@ -250,8 +269,8 @@ is something to avoid misuse of, too.
 <!-- transition: slide -->
 
 ```python
-def __del__(self):
-    ...
+def __del__(self) -> None:
+    self.fp.close()
 ```
 
 <!--
@@ -269,6 +288,8 @@ you **MUST** call your `super()`'s `__del__`.
 
 <!-- transition: slide -->
 
+[[illusions]]
+
 <!--
 The next set of magics involve conjuring illusions,
 of attributes, giving your callers delusions
@@ -279,6 +300,19 @@ why? friendly interfaces is likely the because.
 ---
 
 <!-- transition: slide -->
+
+```python
+class Numbers:
+    def __getattr__(
+        self,
+        key: str,
+    ):
+        if key == "inf":
+            raise AttributeError(key="inf", obj=self)
+        return int(key)
+
+Numbers().one  # 1
+```
 
 <!--
 First on your journey through attribute emulation,
@@ -297,11 +331,22 @@ Now, if you wish to pretend you don't recognize this `name`,
 
 <!-- transition: slide -->
 
+```python
+def __getattribute__(
+    self,
+    key: str,
+):
+    if key in dir(self):
+        return super().__getattribute__(key)
+    return int(key)
+```
+
 <!--
 It has an alter-ego, named `__getattribute__`, you'll see
 which is called for all access, _unconditionally_
 It gets called for names both existing and not,
-but beware, infinite recursion is easily got.
+but beware, infinite recursion is easily got
+if you happen to type out "self-dot".
 So remember when you need to access your attributes inside of this thing,
 you wont use `self.`, you'll give your `super()` a ring
 -->
@@ -309,6 +354,20 @@ you wont use `self.`, you'll give your `super()` a ring
 ---
 
 <!-- transition: slide -->
+
+```python
+class AttrAdder:
+    def __setattr__(
+        self,
+        key: str,
+        value,
+    ) -> None:
+        self.__dict__[key] = value
+
+x = AttrAdder()
+x.cheese = "please"
+x.gizmo = "whizmo"
+```
 
 <!--
 To juxtapose "get", `__setattr__` is how,
@@ -323,6 +382,11 @@ This is also called for all attributes without any condition,
 
 <!-- transition: slide -->
 
+```python
+def __delattr__(self, key: str):
+    del self.__dict__[key]
+```
+
 <!--
 The last of the attr methods, you'll maybe leave off,
 define `__delattr__`, and people might scoff.
@@ -335,6 +399,8 @@ it gets called for all names, unconditionally.
 ---
 
 <!-- transition: slide -->
+
+[[idk]]
 
 <!--
 You'll then find out soon enough,
@@ -356,6 +422,14 @@ instead of sitting _static_ on some other object's shelf.
 
 <!-- transition: slide -->
 
+```python
+class Model:
+    id = IDColumn(...)
+    name = StrColumn(..._)
+```
+
+![w:100 h:50 arrow3](./images/arrow.png)
+
 <!--
 "Descriptors" is the name given to this technique
 of attributes themselves, using doublespeak.
@@ -370,29 +444,67 @@ on how _it_ gets gotted, setted, and deleted, per se
 
 <!-- transition: slide -->
 
+```python
+def __get__(
+    self,
+    instance: object | None,
+    owner: type | None = None,
+):
+    if instance is None:
+        # Class attribute access
+        # E.g. `Foo.attr`
+        return ...
+    else:
+        # instance attribute access
+        # E.g. `foo.attr`
+        return ...
+
+```
+
 <!--
 `__get__` is the first of these spells you'll want to perfect
 conjuring values for attributes based on the caller's object
 (or sometimes the class, as callers sometimes will do,
-using class attribute lookup, so support that too).
 -->
 
 ---
 
 <!-- transition: slide -->
+
+```python
+class staticmethod:
+    def __get__(self, instance, owner):
+        return self.function
+
+class classmethod:
+    def __get__(self, instance, owner = None):
+        cls = owner
+        if cls is None:
+            cls = type(instance)
+        return types.MethodType(self.function, cls)
+
+class property:
+    ...
+```
 
 <!--
-You've maybe have wondered, and even had a theory,
-how SQL ORM's quickly fire off a query,
-when you've run something like `my_user.amount_in_debt`
-the "Column" "descriptor" is leveraging `__get__`
-to run a SQL query, using `my_user`'s ID,
-and return to you the value (and maybe cache it, you see)
+And usage of descriptors you'll find sooner, not later,
+they're used for several built in decorators,
+`staticmethod`, `classmethod`, and `property` all use
+this technique to customize your attributes for you
 -->
 
 ---
 
 <!-- transition: slide -->
+
+```python
+def __set__(self, instance, value) -> None:
+    ...
+
+def __delete__(self, instance) -> None:
+    ...
+```
 
 <!--
 Just like `__getattr__`, `__get__` has two brothers,
@@ -403,16 +515,43 @@ and can do anything they want, both big and small.
 
 ---
 
+![w:100 h:50 arrow4](./images/arrow.png)
+
 <!-- transition: slide -->
 
-<!--
-For metaphorical purposes, let's finish our "Column" story,
-and see how these methods are very applicatory,
+```python
+my_row.column_name
 
-`__set__` gets called for attribute assignment,
+
+
+type(my_row).column_name.__get__(
+    my_row,
+    type(my_row),
+)
+
+
+def __get__(self, instance, owner = None):
+    return = ENGINE.run(
+        "SELECT <column> FROM <table> WHERE <table>.id = <id>",
+        ...,
+        id = instance._id,
+    )
+```
+
+![w:100 h:50 arrow5](./images/arrow.png)
+
+<!--
+You've maybe have wondered, and even had a theory,
+how SQL ORM's quickly fire off a query,
+when you you access certain attributes in your class you set
+the "Column" "descriptor" is leveraging `__get__`
+to run a SQL query, using the instance's database ID,
+and return to you the value (and maybe cache it, you see).
+
+You'll see `__set__` gets called for attribute assignment,
 A SQL `UPDATE` is likely used for new value enshrinement
 
-And `__delete__` when an attribute is told to go bye-bye
+Lastly, `__delete__` when an attribute is told to go bye-bye
 a SQL `DELETE` you'll likely see fly by.
 -->
 
@@ -420,8 +559,19 @@ a SQL `DELETE` you'll likely see fly by.
 
 <!-- transition: slide -->
 
+```python
+class Model:
+    first_name = Column()
+    second_name = Column()
+# ==> Model.first_name.__set_name__("first_name")
+# ==> Model.second_name.__set_name__("second_name")
+
+def __set_name__(self, name: str) -> None:
+    self._name = name
+```
+
 <!--
-There's one more method, that plays in the "descriptor" game,
+There's one more method, that plays in this game,
 and it's a method that goes by `__set_name__`
 our "trio" really is four, oh well, what a shame.
 
@@ -435,6 +585,8 @@ the attribute's name, Python will disclaim.
 
 <!-- transition: slide -->
 
+![bg fit opacity:.9](./images/container.png)
+
 <!--
 And thus the _attribute_ shell game, now comes to a close
 the illusions of _attributes_, we have now exposed
@@ -446,6 +598,18 @@ is emulating _items_ inside of a container
 
 <!-- transition: slide -->
 
+```python
+def __getitem__(self, key):
+    ...
+
+def __setitem__(self, key, value):
+    ...
+
+def __delitem__(self, key):
+    ...
+
+```
+
 <!--
 You'll see this time our trio's suffix is `item`,
 to help quack like containers with things inside 'em
@@ -453,6 +617,21 @@ to help quack like containers with things inside 'em
 They are given the key (and in one case, the value)
 implementing container semantics are then up to you.
 
+-->
+
+---
+
+<!-- transition: slide -->
+
+```python
+class SequenceLike:
+    def __getitem__(self, index: int | slice):
+        if index >= self.length:
+            raise IndexError(...)
+        return self._underlying[index]
+```
+
+<!--
 `__getitem__` has different behaviors on the radar
 depending on the type of container your are
 Your sequence types (which quack like a tuple or a list)
@@ -461,11 +640,54 @@ Negative int support is something you can choose
 to allow or not, is simply up to you.
 If a value provided is outside of your bounds
 an `IndexError` your code should resound
+-->
+
+---
+
+<!-- transition: slide -->
+
+```python
+class MappingLike:
+    def __getitem__(self, key):
+        ...
+        if key not in self._keys:
+            raise KeyError(...)
+        ...
+```
+
+---
+
+<!-- transition: slide -->
+
+<!--
 otherwise, if your container has a Mapping background,
 you'll raise `KeyError` if the key isn't found
+-->
+
+```python
+def __getitem__(self, key):
+    if not isinstance(key, ...):
+        raise TypeError(...)
+    ...
+```
+
+<!--
 and in every case, if you you reject the key's type
 `raise TypeError` you'll then want to gripe
+-->
 
+---
+
+<!-- transition: slide -->
+
+```python
+def __setitem__(self, key, value): ...
+def __delitem__(self, key): ...
+
+# ==> raise IndexError/KeyError/TypeError
+```
+
+<!--
 You'll likely learn too,
 those rules still hold true,
 for the other methods two
@@ -475,8 +697,10 @@ for the other methods two
 
 <!-- transition: slide -->
 
+![bg fit opacity:.9](./images/container2.png)
+
 <!--
-And, as far as semantics go, there are a few more dunders
+And, as far as containers go, there are a few more dunders
 you'll want to define, lest you commit several blunders
 
 So although our trio of trios may have come to a close
