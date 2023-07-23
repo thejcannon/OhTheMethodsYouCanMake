@@ -292,7 +292,7 @@ you **MUST** call your `super()`'s `__del__`.
 
 <!-- transition: slide -->
 
-[[illusions]]
+![h:500px w:500px](./images/illusions.png)
 
 <!--
 The next set of magics involve conjuring illusions,
@@ -404,7 +404,7 @@ it gets called for all names, unconditionally.
 
 <!-- transition: slide -->
 
-[[idk]]
+![bg fit opacity:9](./images/threes.png)
 
 <!--
 You'll then find out soon enough,
@@ -414,7 +414,7 @@ there's more you'll learn: another TWO parts
 yes, like all good things these magics come in three
 in more ways than one, you'll soon see
 the first way is the trio of names "get", "set", and "del"
-then how they're used for illusions as well
+then how they're used for other illusions as well
 
 The second in our trio-of-trios, I'll teach to you now,
 these methods are so powerful. You'll see how,
@@ -856,7 +856,7 @@ so if you want to, dont forget to store it in yourself.
 
 <!-- transition: slide -->
 
-[[numbers]]
+![bg fit opacity:.9](./images/ops.png)
 
 <!--
 You'll find that you're done,
@@ -990,21 +990,13 @@ three more dunder methods will came along
 they're how you support ampersand, caret and pipe.
 And then, when your object supports the at-symbol,
 the method you'll want is named `__matmul__`
--->
 
----
-
-<!-- transition: slide -->
-
-[[idk]]
-
-<!--
 AND THEN, that was it, there won't be more later
 FOURTEEN methods for numeric operators,
 
 unless...
 
-Unless you think that there isn't enough.
+Unless you think that this isn't enough.
 [[Here let's take a poll, is there other number stuff
 we need to define? If yes raise your hand]]
 I see. I suppose our list should expand.
@@ -1014,7 +1006,7 @@ I see. I suppose our list should expand.
 
 <!-- transition: slide -->
 
-[[???]]
+![bg fit opacity:.9](./images/confused-person.png)
 
 <!--
 You'll maybe be asking yourself "O' teacher, how come?"
@@ -1197,13 +1189,7 @@ ul:nth-child(2) > li:nth-child(7) > code:nth-child(6) {
 <!--
 [[How about another poll? That last one was fun.
 Who thinks our numeric operator list is done?]]
--->
 
----
-
-<!-- transition: slide -->
-
-<!--
 Me neither. As it turns out, and you'll see soon enough see
 all but one of these operators' support requires THREE.
 THREE dunders, at most, for each of these things
@@ -1395,7 +1381,7 @@ but no, `__divmod__` has no in-place operator.
 
 <!-- transition: slide -->
 
-[[compare]]
+![bg fit opacity:.9](./images/scale.png)
 
 <!--
 Now, oh baby oh, how the operator list will still grow!
@@ -1518,7 +1504,7 @@ no list of magics in one section is greater
 
 <!-- transition: slide -->
 
-[[number?]]
+![bg fit opacity:.9](./images/numbers.png)
 
 <!--
 Actually, not true, as you'll find out
@@ -1634,7 +1620,7 @@ through formatting your object, based on the spec
 
 <!-- transition: slide -->
 
-[[hmmm]]
+![bg fit opacity:.9](./images/mirror.png)
 
 <!--
 The other magics all come in small lists,
@@ -1753,7 +1739,7 @@ However, these are looked up on the type of your class.
 
 <!-- transition: slide -->
 
-[[yay]]
+![bg fit opacity:.7](./images/seuss-end.png)
 
 <!--
 And actually that's it, no more magic I'll disclose
