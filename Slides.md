@@ -1045,15 +1045,15 @@ let's see an example to bring how this works to light
 <!-- transition: swipe -->
 
 ```python
-tuple() - Foo()
+[1, 2, 3] - Foo()
 # ==>
 def __rsub__(self, left):
     ...
 ```
 
 <!--
-Let's say someone subtracts from a `tuple` your `Foo`,
-well `tuple` doesn't know what the heck to do,
+Let's say someone subtracts from a `list` your `Foo`,
+well `list` doesn't know what the heck to do,
 so it's `__sub__`, then returns `NotImplemented`,
 then the runtime continues on as documented,
 noticing that `tuple` and `Foo` are different classes
@@ -1694,13 +1694,13 @@ but it also gets a chance to suppress an exception
 
 <!-- transition: slide -->
 
-````python
+```python
 def __init_subclass__(cls, ...) -> None:
     ...
 
 def __prepare__(mcls, name, bases, **kwds) -> Mapping:
     ...
-```c
+```
 
 <!--
 And then there are some, which feels kinda wacky,
@@ -1724,7 +1724,7 @@ def __instancecheck__(cls, instance) -> bool:
 
 def __subclasscheck__(cls, subclass) -> bool:
     ...
-````
+```
 
 <!--
 The last set of magics on this magicallest of treks
