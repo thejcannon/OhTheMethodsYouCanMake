@@ -84,6 +84,10 @@ ul > li {
   transform: rotate(90deg) translate(-160%, 150%);
 }
 
+[alt="arrow6"] {
+  transform: rotate(90deg) translate(0%, 150%);
+}
+
 </style>
 
 ![bg w:100% h:170%](./images/title.png)
@@ -1020,13 +1024,19 @@ if, to my caller, a `TypeError` is presented?
 <!-- transition: slide -->
 
 ```python
-# Otherwise
-if not (
-    subclass(left, type(right))
-    or subclass(right, type(left))
-):
-    # --> __r-
+__add__(left, right) --> NotImplemented
+```
 
+![w:100 h:50 arrow6](./images/arrow.png)
+
+```python
+if type(left) is not type(right)
+```
+
+![w:100 h:50 arrow6](./images/arrow.png)
+
+```python
+def __radd__(right, left): ...
 ```
 
 <!--
