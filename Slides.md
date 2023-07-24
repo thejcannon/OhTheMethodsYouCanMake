@@ -290,7 +290,7 @@ you **MUST** call your `super()`'s `__del__`.
 
 ---
 
-<!-- transition: slide -->
+<!-- transition: swipe -->
 
 ![h:500px w:500px](./images/illusions.png)
 
@@ -333,7 +333,7 @@ Now, if you wish to pretend you don't recognize this `name`,
 
 ---
 
-<!-- transition: slide -->
+<!-- transition: swipe -->
 
 ```python
 def __getattribute__(
@@ -384,7 +384,7 @@ This is also called for all attributes without any condition,
 
 ---
 
-<!-- transition: slide -->
+<!-- transition: swipe -->
 
 ```python
 def __delattr__(self, key: str):
@@ -424,7 +424,7 @@ instead of sitting _static_ on some other object's shelf.
 
 ---
 
-<!-- transition: slide -->
+<!-- transition: swipe -->
 
 ```python
 class Model:
@@ -473,7 +473,7 @@ conjuring values for attributes based on the caller's object
 
 ---
 
-<!-- transition: slide -->
+<!-- transition: swipe -->
 
 ```python
 class staticmethod:
@@ -521,7 +521,7 @@ and can do anything they want, both big and small.
 
 ![w:100 h:50 arrow4](./images/arrow.png)
 
-<!-- transition: slide -->
+<!-- transition: swipe -->
 
 ```python
 my_row.column_name
@@ -587,7 +587,7 @@ the attribute's name, Python will disclaim.
 
 ---
 
-<!-- transition: slide -->
+<!-- transition: swipe -->
 
 ![bg fit opacity:.9](./images/container.png)
 
@@ -625,7 +625,7 @@ implementing container semantics are then up to you.
 
 ---
 
-<!-- transition: slide -->
+<!-- transition: swipe -->
 
 ```python
 class SequenceLike:
@@ -661,7 +661,7 @@ class MappingLike:
 
 ---
 
-<!-- transition: slide -->
+<!-- transition: swipe -->
 
 <!--
 otherwise, if your container has a Mapping background,
@@ -699,7 +699,7 @@ for the other methods two
 
 ---
 
-<!-- transition: slide -->
+<!-- transition: swipe -->
 
 ![bg fit opacity:.9](./images/container2.png)
 
@@ -729,7 +729,7 @@ Python can return the number back to them.
 
 ---
 
-<!-- transition: slide -->
+<!-- transition: swipe -->
 
 ```python
 def __iter__(self) -> Iterator[...]:
@@ -762,7 +762,7 @@ Although technically, you don't have to define it, Python won't be bitter
 
 ---
 
-<!-- transition: slide -->
+<!-- transition: swipe -->
 
 ```python
 # Otherwise
@@ -804,7 +804,7 @@ just how the object membership test will unroll.
 
 ---
 
-<!-- transition: slide -->
+<!-- transition: swipe -->
 
 ```python
 def __reversed__(self) -> Iterator[...]:
@@ -835,7 +835,7 @@ indexing backwards to 0, and then...
 
 ---
 
-<!-- transition: slide -->
+<!-- transition: swipe -->
 
 ```python
 def __missing__(self, key):
@@ -874,7 +874,7 @@ it's the list of operators supported on a number
 
 ---
 
-<!-- transition: slide -->
+<!-- transition: swipe -->
 
 ```python
 def __add__(self, right):
@@ -1004,7 +1004,7 @@ I see. I suppose our list should expand.
 
 ---
 
-<!-- transition: slide -->
+<!-- transition: swipe -->
 
 ![bg fit opacity:.9](./images/confused-person.png)
 
@@ -1042,7 +1042,7 @@ let's see an example to bring how this works to light
 
 ---
 
-<!-- transition: slide -->
+<!-- transition: swipe -->
 
 ```python
 tuple() - Foo()
@@ -1198,7 +1198,7 @@ what _joy_ to us, supporting operators brings
 
 ---
 
-<!-- transition: slide -->
+<!-- transition: swipe -->
 
 ```python
 x += 0
@@ -1234,7 +1234,7 @@ then `x = x + y` will be the fallbacking
 
 ---
 
-<!-- transition: slide -->
+<!-- transition: swipe -->
 
 <style scoped>
 section {
@@ -1392,7 +1392,7 @@ but you'll still need to learn the dunders to _compare_
 
 ---
 
-<!-- transition: slide -->
+<!-- transition: swipe -->
 
 <style scoped>
 section {
@@ -1461,7 +1461,7 @@ An empty container is Falsey, then.
 
 ---
 
-<!-- transition: slide -->
+<!-- transition: swipe -->
 
 <style scoped>
 section {
@@ -1517,7 +1517,7 @@ numbers, I guess, just have lots of flexibility
 
 ---
 
-<!-- transition: slide -->
+<!-- transition: swipe -->
 
 <style scoped>
 section {
@@ -1597,7 +1597,7 @@ to make the type conversion occur
 
 ---
 
-<!-- transition: slide -->
+<!-- transition: swipe -->
 
 ```python
 def __repr__(self) -> str:
@@ -1631,7 +1631,7 @@ yet, here are some more, for you, coming in at a trickling
 
 ---
 
-<!-- transition: slide -->
+<!-- transition: swipe -->
 
 ```python
 def __call__(self, ...):
@@ -1664,7 +1664,7 @@ you raise it when there's no more values in your formation
 
 ---
 
-<!-- transition: slide -->
+<!-- transition: swipe -->
 
 ```python
 def __enter__(self):
@@ -1694,13 +1694,13 @@ but it also gets a chance to suppress an exception
 
 <!-- transition: slide -->
 
-```python
+````python
 def __init_subclass__(cls, ...) -> None:
     ...
 
 def __prepare__(mcls, name, bases, **kwds) -> Mapping:
     ...
-```
+```c
 
 <!--
 And then there are some, which feels kinda wacky,
@@ -1716,7 +1716,7 @@ on second thought, you'll not want to go there...
 
 ---
 
-<!-- transition: slide -->
+<!-- transition: swipe -->
 
 ```python
 def __instancecheck__(cls, instance) -> bool:
@@ -1724,7 +1724,7 @@ def __instancecheck__(cls, instance) -> bool:
 
 def __subclasscheck__(cls, subclass) -> bool:
     ...
-```
+````
 
 <!--
 The last set of magics on this magicallest of treks
@@ -1739,7 +1739,7 @@ However, these are looked up on the type of your class.
 
 <!-- transition: slide -->
 
-![bg fit opacity:.7](./images/seuss-end.png)
+![bg fit opacity:.9](./images/seuss-end.png)
 
 <!--
 And actually that's it, no more magic I'll disclose
@@ -1753,6 +1753,14 @@ most of the magics, that page does entail
 Now, since your mountain is waiting, and as you go on your way,
 remember the things I rememembered to you today,
 and write all your code, the good, Pythonic way.
+-->
 
+---
+
+<!-- transition: swipe -->
+
+![bg 40% opacity:.9](./images/portrait.png)
+
+<!--
 The End.
 -->
