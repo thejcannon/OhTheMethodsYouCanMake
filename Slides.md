@@ -27,6 +27,7 @@ backgroundColor: white
 }
 
 h1, h2 {
+  color: black;
   font-family: 'Grinched';
 }
 
@@ -45,6 +46,7 @@ marp-pre {
 
 footer {
   font-family: 'Doctor Soos Light';
+  color: black;
   transform: translate(0, 15%);
 }
 
@@ -57,12 +59,13 @@ ul > li {
 }
 
 #by-dunder-seuss {
-  transform: translate(20%, -240%);
+  transform: translate(0%, 300%);
 }
 
 #for-dottie-and-teddy-with-love {
     font-family: 'Doctor Soos Light';
 }
+
 
 [alt="arrow1"] {
   transform: rotate(270deg) translate(0%, 150%);
@@ -90,7 +93,7 @@ ul > li {
 
 </style>
 
-![bg w:100% h:170%](./images/title.png)
+![bg 75%](./images/title.png)
 
 # Oh the (Methods) You Can (Make)
 
@@ -103,8 +106,6 @@ ul > li {
 ![width:200px](./images/author.png)
 
 <!--
-(1 minute)
-
 Josh Cannon, aka "Dunder Seuss" has written no books so far, has been on a single podcast, and done
 exactly one talk before he decided to write this book.
 
@@ -663,14 +664,14 @@ class MappingLike:
         ...
 ```
 
----
-
-<!-- transition: swipe -->
-
 <!--
 otherwise, if your container has a Mapping background,
 you'll raise `KeyError` if the key isn't found
 -->
+
+---
+
+<!-- transition: swipe -->
 
 ```python
 def __getitem__(self, key):
