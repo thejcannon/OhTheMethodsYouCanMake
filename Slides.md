@@ -356,7 +356,7 @@ which is called for all access, _unconditionally_
 It gets called for names both existing and not,
 but beware, infinite recursion is easily got
 if you happen to type out "self-dot".
-So remember when you need to access your attributes inside of this thing,
+So remember when you need to access your attributes inside of your thing,
 you wont use `self.`, you'll give your `super()` a ring
 -->
 
@@ -1067,9 +1067,9 @@ Let's say someone subtracts from a `list` your `Foo`,
 well `list` doesn't know what the heck to do,
 so it's `__sub__`, then returns `NotImplemented`,
 then the runtime continues on as documented,
-noticing that `tuple` and `Foo` are different classes
+noticing that `list` and `Foo` are different classes
 and calls `Foo`'s `__rsub__`, and it passes
-the tuple object on which we've acted
+the listuplet object on which we've acted
 so `Foo` can say how it should be subtracted.
 
 Now remember, you'll have to be dextrous and deft,
@@ -1560,7 +1560,7 @@ li > code:last-child {
 
 <!--
 From mathematics, the list adds on four,
-\_\_round, trunc, ceil and floor.
+__round, trunc, ceil and floor.
 What these methods each do, you'll notice is visible,
 truncating the value into an `Integral`
 
@@ -1601,7 +1601,7 @@ li > code:last-child {
 - `__str__` `(` `self` `)` `->` `str`
 
 <!--
-`\_\_complex, int, float, bytes, and str
+`__complex, int, float, bytes, and str
 are magics which Python will look and refer
 to make the type conversion occur
 -->
