@@ -280,6 +280,7 @@ is something to avoid misuse of, too.
 ```python
 def __del__(self) -> None:
     self.fp.close()
+    super().__del__()
 ```
 
 <!--
@@ -472,8 +473,9 @@ def __get__(
 
 <!--
 `__get__` is the first of these spells you'll want to perfect
-conjuring values for attributes based on the caller's object
+conjuring values for attributes based on the owner's object
 (or sometimes the class, as callers sometimes will do,
+so your `__get__` should support that too)
 -->
 
 ---
@@ -552,7 +554,7 @@ def __get__(self, instance, owner = None):
 <!--
 You've maybe have wondered, and even had a theory,
 how SQL ORM's quickly fire off a query,
-when you you access certain attributes in your class you set
+when you access certain attributes in your class you set
 the "Column" "descriptor" is leveraging `__get__`
 to run a SQL query, using the instance's database ID,
 and return to you the value (and maybe cache it, you see).
@@ -872,9 +874,6 @@ See, you briefly dipped your toe into the "index" operator
 however you'll find the list of ops to support is oh so much greater
 You'll think about `+` and `-` and start figuring
 that the list of operators is biggering and biggering
-
-The first giant list, you'll very soon encumber
-it's the list of operators supported on a number
 -->
 
 ---
@@ -1201,7 +1200,7 @@ ul:nth-child(2) > li:nth-child(7) > code:nth-child(6) {
 [[How about another poll? That last one was fun.
 Who thinks our numeric operator list is done?]]
 
-Me neither. As it turns out, and you'll see soon enough see
+Me neither. As it turns out, and you'll soon enough see
 all but one of these operators' support requires THREE.
 THREE dunders, at most, for each of these things
 what _joy_ to us, supporting operators brings
@@ -1682,6 +1681,7 @@ def __enter__(self):
     return self
 
 def __exit__(self, exc_type, exc_value, traceback):
+    self._release()
     if self.suppress:
         return True
     ...
@@ -1730,9 +1730,11 @@ on second thought, you'll not want to go there...
 <!-- transition: swipe -->
 
 ```python
+# isinstance ==>
 def __instancecheck__(cls, instance) -> bool:
     ...
 
+# issubclass ==>
 def __subclasscheck__(cls, subclass) -> bool:
     ...
 ```
@@ -1759,7 +1761,7 @@ your journey, you've journeyed now comes to a close
 To know most of them, including the ones this talk doesn't entail,
 read docs.python.org/3/reference/datamodel.html
 (or just ask Google for the URL)
-most of the magics, that page does entail
+since, most of the magics, that page does detail
 
 Now, since your mountain is waiting, and as you go on your way,
 remember the things I rememembered to you today,
