@@ -121,7 +121,7 @@ expressive, readable, and intuitive.
 
 ---
 
-## For Dottie and Teddy, with Love
+## For Devon, Dottie, and Teddy, with Love
 
 ---
 
