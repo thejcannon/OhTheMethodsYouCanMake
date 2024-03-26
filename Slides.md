@@ -1,6 +1,6 @@
 ---
 marp: true
-footer: "#NorthBayPython 2023 - Oh the (Methods) You Can (Make): By Dunder Seuss  - ![w:40 h:20](./images/discord.png) thejcannon"
+footer: "#PyCascades 2024 - Oh the (Methods) You Can (Make): By Dunder Seuss  - ![w:40 h:20](./images/discord.png) thejcannon"
 theme: gaia
 transition: swipe
 class:
@@ -93,7 +93,7 @@ ul > li {
 
 </style>
 
-![bg 75%](./images/title.png)
+![bg 45%](./images/title.png)
 
 # Oh the (Methods) You Can (Make)
 
@@ -127,7 +127,7 @@ expressive, readable, and intuitive.
 
 <!-- transition: slide -->
 
-![bg 45%](./images/opening-snake.png)
+![bg 45%](./images/wizard-snake.png)
 
 <!--
 Congratulations!
@@ -163,7 +163,7 @@ allowing _your_ objects many customizations
 
 <!-- transition: slide -->
 
-![bg fit opacity:.7](./images/seuss1.png)
+![bg fit](./images/seussscape.png)
 
 <!--
 You'll learn all about how to emulate a container
@@ -204,7 +204,7 @@ The most common magic, I truly do suspect.
 
 <!-- transition: slide -->
 
-![h:500px w:500px](./images/confused-snake.png)
+![bg fit](./images/confused-snake.png)
 
 <!--
 But,
@@ -264,7 +264,7 @@ to return a subclass' instance specific to _you_.
 
 <!-- transition: swipe -->
 
-![h:500px w:500px](./images/warning.png)
+![bg fit](./images/warning.png)
 
 <!--
 Now, with great careful care, and great tactful tact,
@@ -410,7 +410,7 @@ it gets called for all names, unconditionally.
 
 <!-- transition: slide -->
 
-![bg fit opacity:9](./images/threes.png)
+![bg fit opacity:9](./images/triangles.png)
 
 <!--
 You'll then find out soon enough,
@@ -1630,7 +1630,7 @@ through formatting your object, based on the spec
 
 <!-- transition: slide -->
 
-![bg fit opacity:.9](./images/mirror.png)
+![bg fit opacity:.9](./images/factory.png)
 
 <!--
 The other magics all come in small lists,
@@ -1752,7 +1752,7 @@ However, these are looked up on the type of your class.
 
 <!-- transition: slide -->
 
-![bg fit opacity:.9](./images/seuss-end.png)
+![bg fit opacity:.9](./images/journey.png)
 
 <!--
 And actually that's it, no more magic I'll disclose
