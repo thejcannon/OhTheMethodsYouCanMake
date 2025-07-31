@@ -1,6 +1,5 @@
 ---
 marp: true
-footer: "#PyCascades 2024 - Oh the (Methods) You Can (Make): By Dunder Seuss  - ![w:40 h:20](./images/discord.png) thejcannon"
 theme: gaia
 transition: swipe
 class:
@@ -93,7 +92,7 @@ ul > li {
 
 </style>
 
-![bg 45%](./images/title.png)
+![bg](./images/title.png)
 
 # Oh the (Methods) You Can (Make)
 
@@ -105,11 +104,13 @@ ul > li {
 
 ![width:200px](./images/author.png)
 
+<!-- transition: slide -->
+
 <!--
 Josh Cannon, aka "Dunder Seuss" has written no books so far, has been on a single podcast, and done
 exactly one talk before he decided to write this book.
 
-Josh is a Build Engineer by day,
+Josh is a Developer Productivity Engineer by day,
 a maintainer of the Pantsbuild Open Source Build System also by day.
 And sometimes participates in other open source projects, Python community discussions,
 and conference speaking... also by day.
@@ -117,11 +118,22 @@ and conference speaking... also by day.
 He's a lover of getting to know enough Python to make expressive, readable, and intuitive code.
 He wrote this book to teach others of the power and magic that you can bring to your objects to make them
 expressive, readable, and intuitive.
+
+---
+
+2024 AI addendum: Although Midjourney was used to create the whimsical grpahical art, absolutely no
+AI or any kind of text-generation was used for the content. The author feels like that'd ruin the
+"artistic value" of this book.
+
+Enjoy!
+
 -->
 
 ---
 
 ## For Devon, Dottie, and Teddy, with Love
+
+<!-- transition: swipe -->
 
 ---
 
@@ -163,7 +175,7 @@ allowing _your_ objects many customizations
 
 <!-- transition: slide -->
 
-![bg fit](./images/seussscape.png)
+![bg](./images/seussscape.png)
 
 <!--
 You'll learn all about how to emulate a container
@@ -204,7 +216,7 @@ The most common magic, I truly do suspect.
 
 <!-- transition: slide -->
 
-![bg fit](./images/confused-snake.png)
+![bg 45%](./images/confused-snake.png)
 
 <!--
 But,
@@ -264,7 +276,7 @@ to return a subclass' instance specific to _you_.
 
 <!-- transition: swipe -->
 
-![bg fit](./images/warning.png)
+![bg 45%](./images/warning.png)
 
 <!--
 Now, with great careful care, and great tactful tact,
@@ -410,7 +422,7 @@ it gets called for all names, unconditionally.
 
 <!-- transition: slide -->
 
-![bg fit opacity:9](./images/triangles.png)
+![bg  opacity:9](./images/triangles.png)
 
 <!--
 You'll then find out soon enough,
@@ -596,7 +608,7 @@ the attribute's name, Python will disclaim.
 
 <!-- transition: swipe -->
 
-![bg fit opacity:.9](./images/container.png)
+![bg 45% opacity:.9](./images/container.png)
 
 <!--
 And thus the _attribute_ shell game, now comes to a close
@@ -708,7 +720,7 @@ for the other methods two
 
 <!-- transition: swipe -->
 
-![bg fit opacity:.9](./images/container2.png)
+![bg 45% opacity:.9](./images/container2.png)
 
 <!--
 And, as far as containers go, there are a few more dunders
@@ -773,7 +785,7 @@ Although technically, you don't have to define it, Python won't be bitter
 
 ```python
 # Otherwise
-for elem in obj:  # __iter__
+for elem in self:  # __iter__
     if elem is test or elem == test:
         return True
 return False
@@ -791,13 +803,15 @@ and asking if any of those objects are equal or the same.
 
 ```python
 # Otherwise
+i = 0
 while True:
     try:
-        elem = obj[i]  # __getitem__
+        elem = self[i]  # __getitem__
     except IndexError:
         return False
     if elem is test or elem == test:
         return True
+    i += 1
 ```
 
 <!--
@@ -830,8 +844,8 @@ It returns an iterator for doing backwards iteration,
 
 ```python
 # Otherwise
-for i in range(len(obj) -1, -1):  # __len__
-    yield obj[i]  # __getitem__
+for i in range(len(self) -1, -1):  # __len__
+    yield self[i]  # __getitem__
 ```
 
 <!--
@@ -863,14 +877,14 @@ so if you want to, dont forget to store it in yourself.
 
 <!-- transition: slide -->
 
-![bg fit opacity:.9](./images/ops.png)
+![bg opacity:.9](./images/ops.png)
 
 <!--
 You'll find that you're done,
 you've mastered container emulation
 But your next set of magics form quite the combination
 
-See, you briefly dipped your toe into the "index" operator
+See, you briefly dipped your toe into a few operators
 however you'll find the list of ops to support is oh so much greater
 You'll think about `+` and `-` and start figuring
 that the list of operators is biggering and biggering
@@ -1010,7 +1024,7 @@ I see. I suppose our list should expand.
 
 <!-- transition: swipe -->
 
-![bg fit opacity:.9](./images/confused-person.png)
+![bg opacity:.9](./images/confused-person.png)
 
 <!--
 You'll maybe be asking yourself "O' teacher, how come?"
@@ -1056,9 +1070,11 @@ let's see an example to bring how this works to light
 
 ```python
 [1, 2, 3] - Foo()
+# list.__sub__ ==> NotImplemented
 # ==>
-def __rsub__(self, left):
-    ...
+class Foo:
+    def __rsub__(self, left):
+        ...
 ```
 
 <!--
@@ -1514,7 +1530,7 @@ no list of magics in one section is greater
 
 <!-- transition: slide -->
 
-![bg fit opacity:.9](./images/numbers.png)
+![bg 45% opacity:.9](./images/numbers.png)
 
 <!--
 Actually, not true, as you'll find out
@@ -1597,6 +1613,7 @@ li > code:last-child {
 - `__complex__` `(` `self` `)` `->` `complex`
 - `__int__` `(` `self` `)` `->` `int`
 - `__float__` `(` `self` `)` `->` `float`
+- `__bytes__` `(` `self` `)` `->` `bytes`
 - `__str__` `(` `self` `)` `->` `str`
 
 <!--
@@ -1630,7 +1647,7 @@ through formatting your object, based on the spec
 
 <!-- transition: slide -->
 
-![bg fit opacity:.9](./images/factory.png)
+![bg opacity:.9](./images/factory.png)
 
 <!--
 The other magics all come in small lists,
@@ -1752,7 +1769,7 @@ However, these are looked up on the type of your class.
 
 <!-- transition: slide -->
 
-![bg fit opacity:.9](./images/journey.png)
+![bg opacity:.9](./images/journey.png)
 
 <!--
 And actually that's it, no more magic I'll disclose
